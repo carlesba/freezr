@@ -1,10 +1,10 @@
 import FrozenObject from './FrozenObject'
 import FrozenArray from './FrozenArray'
-import { freezeObject, freezeArray } from './freezers'
+import { freeze, deepFreeze } from './freezers'
 
 export {
   FrozenObject,
   FrozenArray,
-  freezeObject,
-  freezeArray
+  freeze,
+  deepFreeze
 }

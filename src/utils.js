@@ -1,4 +1,4 @@
-const createProperty = (value) => {
+export const createProperty = (value) => {
   return {
     enumerable: true,
     get: () => value,
@@ -7,5 +7,3 @@ const createProperty = (value) => {
     }
   }
 }
-
-export default createProperty

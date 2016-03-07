@@ -1,53 +1,29 @@
 import expect from 'expect'
-import {FrozenArray} from '../src/index'
-/*
-  UTILS
- */
-const createMockArray = () => {
-  return [
-    1,
-    2,
-    () => 3,
-    true,
-    {a: 1}
-  ]
-}
-const buildMockFrozen = (source = createMockArray()) => {
-  return {
-    source,
-    frozen: new FrozenArray(source)
-  }
-}
-
-const expectToBeImmutableAndThrowError = (target) => {
-  const firstKey = Object.keys(target)[0]
-  const firstValue = target[firstKey]
-  expect(() => {
-    target[firstKey] = firstValue + 1
-  }).toThrow()
-  expect(target[firstKey]).toBe(firstValue)
-}
+import FrozenArray from '../src/FrozenArray'
+import {
+  createMockArray,
+  buildMockArrayFrozen,
+  expectToBeImmutableAndThrowError
+} from './helpers'
 
 const expectToExecuteMethodPerItem = (methodName) => {
-  const {frozen} = buildMockFrozen()
+  const {frozen} = buildMockArrayFrozen()
   var times = 0
   frozen[methodName](() => { times += 1 })
   expect(times).toBe(frozen.length)
 }
 
 const expectToPassValueIndexToCallback = (methodName) => {
-  const {frozen} = buildMockFrozen()
+  const {frozen} = buildMockArrayFrozen()
   frozen[methodName]((value, index) => {
     expect(value).toBe(frozen[index])
   })
 }
-/*
-  TESTS
- */
+
 describe('FrozenArray', () => {
   describe(':constructor', () => {
     it('returns an immutable object', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       expectToBeImmutableAndThrowError(frozen)
     })
     it('returns an array with the value as the original one', () => {
@@ -96,7 +72,7 @@ describe('FrozenArray', () => {
       expectToPassValueIndexToCallback('map')
     })
     it('returns a new FrozenArray with the same size', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const mapped = frozen.map((value) => value)
       expect(mapped.length).toBe(frozen.length, 'wrong length')
       expect(mapped).toNotBe(frozen, 'same array')
@@ -112,12 +88,12 @@ describe('FrozenArray', () => {
       expectToPassValueIndexToCallback('filter')
     })
     it('filters elements', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const filtered = frozen.filter((value) => typeof value === 'function')
       expect(filtered.length).toBe(1)
     })
     it('returns another FrozenArray', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const filtered = frozen.filter((value) => typeof value === 'function')
       expect(filtered instanceof FrozenArray).toBe(true)
     })
@@ -128,7 +104,7 @@ describe('FrozenArray', () => {
       expectToExecuteMethodPerItem('reduce')
     })
     it('passes to the callback the accumulated value, the value and index for each element', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const accumulator = Symbol('acc')
       const times = frozen.reduce((acc, value, index) => {
         expect(value).toBe(frozen[index], 'callback\'s value does not match')
@@ -141,7 +117,7 @@ describe('FrozenArray', () => {
 
   describe('.concat', () => {
     it('returns same values as native Array method', () => {
-      const {source, frozen} = buildMockFrozen()
+      const {source, frozen} = buildMockArrayFrozen()
       const concatenation = ['a', 'b']
       const plainOutput = source.concat(concatenation)
       const concatFrozen = frozen.concat(concatenation)
@@ -150,7 +126,7 @@ describe('FrozenArray', () => {
       })
     })
     it('returns another FrozenArray', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const concatFrozen = frozen.concat(['a', 'b'])
       expect(concatFrozen.length).toBe(frozen.length + 2)
       expect(concatFrozen instanceof FrozenArray).toBe(true)
@@ -159,7 +135,7 @@ describe('FrozenArray', () => {
 
   describe('.push', () => {
     it('add new element to the end', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const addedElement1 = {a: 1}
       const addedElement2 = {a: 2}
       const target = frozen.push(addedElement1, addedElement2)
@@ -172,7 +148,7 @@ describe('FrozenArray', () => {
 
   describe('.pop', () => {
     it('returns a new frozenArray without the last element', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const target = frozen.pop()
       expectToBeImmutableAndThrowError(target)
       expect(target.length).toBe(frozen.length - 1, 'bad length')
@@ -188,7 +164,7 @@ describe('FrozenArray', () => {
 
   describe('.shift', () => {
     it('returns a new frozenArray without the first element', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const target = frozen.shift()
       expectToBeImmutableAndThrowError(target)
       expect(target.length).toBe(frozen.length - 1, 'bad length')
@@ -204,7 +180,7 @@ describe('FrozenArray', () => {
 
   describe('.unshift', () => {
     it('returns a new frozenArray with the values prepended', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const addedElement1 = {a: 1}
       const addedElement2 = {a: 2}
       const target = frozen.unshift(addedElement1, addedElement2)
@@ -217,7 +193,7 @@ describe('FrozenArray', () => {
 
   describe('.join', () => {
     it('joints all elements into one string', () => {
-      const {source, frozen} = buildMockFrozen(['a', 'b'])
+      const {source, frozen} = buildMockArrayFrozen(['a', 'b'])
       const result = frozen.join(' ')
       expect(result).toBe(source.join(' '), 'not work as native method')
     })
@@ -225,7 +201,7 @@ describe('FrozenArray', () => {
 
   describe('.find', () => {
     it('returns first element that matches with the callback', () => {
-      const {source, frozen} = buildMockFrozen()
+      const {source, frozen} = buildMockArrayFrozen()
       const callback = (value) => value === true
       expect(frozen.find(callback))
         .toBe(source.find(callback), 'not work as native method')
@@ -237,7 +213,7 @@ describe('FrozenArray', () => {
 
   describe('.findIndex', () => {
     it('returns first element\'s index that matches with the callback', () => {
-      const {source, frozen} = buildMockFrozen()
+      const {source, frozen} = buildMockArrayFrozen()
       const callback = (value) => value === true
       expect(frozen.findIndex(callback))
         .toBe(source.findIndex(callback), 'not work as native method')
@@ -249,7 +225,7 @@ describe('FrozenArray', () => {
 
   describe('.reverse', () => {
     it('returns a new FrozenArray with reversed values', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const lastIndex = frozen.length - 1
       frozen.reverse().forEach((value, index) => {
         expect(frozen[lastIndex - index]).toBe(value)
@@ -260,19 +236,19 @@ describe('FrozenArray', () => {
 
   describe('.indexOf', () => {
     it('returns the index for an element in the array', () => {
-      const {source, frozen} = buildMockFrozen()
+      const {source, frozen} = buildMockArrayFrozen()
       const target = source[1]
       expect(frozen.indexOf(target)).toBe(1)
     })
     it('returns -1 when doesn\'t find anything', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       expect(frozen.indexOf(Symbol())).toBe(-1)
     })
   })
 
   describe('.insertAt', () => {
     it('returns a new FrozenArray with the value at position specified', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const position = 1
       const newValue = {foo: 'moo'}
       const target = frozen.insertAt(position, newValue)
@@ -284,7 +260,7 @@ describe('FrozenArray', () => {
 
   describe('.deleteAt', () => {
     it('returns a new FrozenArray without the value at the specified position', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const position = 1
       const target = frozen.deleteAt(position)
       expectToBeImmutableAndThrowError(target)
@@ -301,7 +277,7 @@ describe('FrozenArray', () => {
 
   describe('.update', () => {
     it('returns a new FrozenArray with the value at position specified updated', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockArrayFrozen()
       const position = 1
       const newValue = {foo: 'moo'}
       const target = frozen.update(position, newValue)

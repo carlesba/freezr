@@ -1,4 +1,4 @@
-import createProperty from './createProperty'
+import { createProperty } from './utils'
 
 class FrozenObject {
   constructor (source) {

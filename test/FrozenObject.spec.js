@@ -1,40 +1,20 @@
 import expect from 'expect'
-import {FrozenObject} from '../src/index'
-
-const createMockObject = () => {
-  return {
-    a: 1,
-    b: 2,
-    c: () => 3
-  }
-}
-
-const buildMockFrozen = (source = createMockObject()) => {
-  return {
-    source,
-    frozen: new FrozenObject(source)
-  }
-}
-
-const expectToBeImmutableAndThrowError = (target) => {
-  const firstKey = Object.keys(target)[0]
-  const firstValue = target[firstKey]
-  expect(() => {
-    target[firstKey] = firstValue + 1
-  }).toThrow()
-  expect(target[firstKey]).toBe(firstValue)
-}
+import FrozenObject from '../src/FrozenObject'
+import {
+  buildMockObjectFrozen,
+  expectToBeImmutableAndThrowError
+} from './helpers'
 
 describe('FrozenObject', () => {
   describe(':constructor', () => {
     it('returns an object with all the props from the source', () => {
-      const {source, frozen} = buildMockFrozen()
+      const {source, frozen} = buildMockObjectFrozen()
       Object.keys(source).forEach((key) => {
         expect(source[key]).toBe(frozen[key])
       })
     })
     it('throw an error when try to mutate a property', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockObjectFrozen()
       expect(() => {
         frozen.a = 2
       }).toThrow()
@@ -58,7 +38,7 @@ describe('FrozenObject', () => {
 
   describe('.set', () => {
     it('returns a new FrozenObject with a new value for the specified key', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockObjectFrozen()
       const aValue = frozen.a
       const target = frozen.set('a', aValue + 1)
       expect(target.a).toBe(aValue + 1)
@@ -75,7 +55,7 @@ describe('FrozenObject', () => {
 
   describe('.delete', () => {
     it('returns a new FrozenObject without the specified key', () => {
-      const {frozen} = buildMockFrozen()
+      const {frozen} = buildMockObjectFrozen()
       const deletedKey = 'a'
       const target = frozen.delete(deletedKey)
       Object.keys(target).forEach((key) => {
