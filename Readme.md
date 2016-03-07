@@ -79,6 +79,6 @@ frozenObject.delete('a') // will return another frozen object without 'a'
 
 ## To Do
 
-- Create a deep parser.
+- ~~Create a deep parser~~.
 - Use lodash methods.
 - Remove `Object.freeze` on production with **`NODE_ENV` [convention](https://nodejs.org/docs/latest/api/process.html#process_process_env)**.
