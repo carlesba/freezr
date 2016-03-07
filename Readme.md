@@ -2,7 +2,7 @@
 
 ***(wip) this is an alpha version. Just a proposal***
 
-(Another) Library to build your immutable data structure.
+(Another) Library to build your immutable data structure
 
 ## Concerns
 
@@ -10,7 +10,7 @@ There are lots of libraries to build immutable data but most of them avoid the n
 
 - **Loose new language features**. As *[destructuring](https://babeljs.io/docs/learn-es2015/#destructuring)*.
 - **Worring about arguments interface**. Your application cannot deal 100% with *[put_your_immutable_library]*'s data structure so when that function gets two objects you can't be sure how to read its data.
-- **Problems when using other libraries**. You'd like to use that lodas method or this redux's middleare but you have to transform your immutable-data to plain objects to do it.
+- **Problems when using other libraries**. You'd like to use that [lodash](https://www.npmjs.com/package/lodash) method or this redux's middleare but you have to transform your immutable-data to plain objects to do it.
 - ***Object.freeze* it's not enough**. Although we *freeze* all our data we need to worry every time we create a new object.
 
 ## Aproach
@@ -79,5 +79,7 @@ frozenObject.delete('a') // will return another frozen object without 'a'
 
 ## To Do
 
-Create a deep parser.
-
+- Create a deep parser.
+- Create isFrozen method.
+- Use lodash methods.
+- Remove `Object.freeze` on production with **`NODE_ENV` [convention](https://nodejs.org/docs/latest/api/process.html#process_process_env)**.
