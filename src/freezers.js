@@ -6,7 +6,7 @@ const isPlainObj = (value) => {
 }
 
 export const deepFreeze = (source) => {
-  return freeze(recursiveFreeze(source))
+  return recursiveFreeze(source)
 }
 
 export const freeze = (source) => {
@@ -20,17 +20,18 @@ export const freeze = (source) => {
 }
 
 const recursiveFreeze = (source, key) => {
+  let o = {}
   if (isPlainObj(source)) {
-    return keyIterator(source, (value, key) => recursiveFreeze(value, key))
+    Object.assign(o, keyIterator(source, (value, key) => recursiveFreeze(value, key)))
   } else {
-    return freeze({ [key]: source })
+    o[key] = source
   }
 
   if (Array.isArray(source)) {
     return source.map(value => recursiveFreeze(value))
   }
 
-  return source
+  return freeze(o)
 }
 
 const keyIterator = (obj, fn) => {
