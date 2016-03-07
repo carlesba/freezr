@@ -1,10 +1,22 @@
 import expect from 'expect'
 import FrozenObject from '../src/FrozenObject'
+import { freeze } from '../src/freezers'
+import { expectToBeImmutableAndThrowError } from './helpers'
 
-import {
-  buildMockObjectFrozen,
-  expectToBeImmutableAndThrowError
-} from './helpers'
+const createMockObject = () => {
+  return {
+    a: 1,
+    b: 2,
+    c: () => 3
+  }
+}
+
+const buildMockObjectFrozen = (source = createMockObject()) => {
+  return {
+    source,
+    frozen: freeze(source)
+  }
+}
 
 describe('FrozenObject', () => {
   describe(':constructor', () => {
