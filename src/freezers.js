@@ -20,8 +20,11 @@ export const freeze = (source) => {
 }
 
 const recursiveFreeze = (source, key) => {
-  if (isPlainObj(source)) return keyIterator(source, (value, key) => recursiveFreeze(value, key))
-  else return freeze({[key]: source})
+  if (isPlainObj(source)) {
+    return keyIterator(source, (value, key) => recursiveFreeze(value, key))
+  } else {
+    return freeze({ [key]: source })
+  }
 
   if (Array.isArray(source)) {
     return source.map(value => recursiveFreeze(value))
