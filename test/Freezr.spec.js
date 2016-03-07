@@ -2,7 +2,7 @@ import {
   buildMockObjectFrozen,
   buildMockObjectDeepFrozen,
   buildMockArrayFrozen,
-  buildMockArrayDeepFrozen,
+  // buildMockArrayDeepFrozen,
   expectToBeImmutableAndThrowError
 } from './helpers'
 
@@ -20,13 +20,12 @@ describe('freezr', function () {
   describe('deepFreezr', function () {
     it('', function () {
       const { frozen } = buildMockObjectDeepFrozen()
+      console.log(frozen)
+      console.log(frozen.first)
+      console.log(frozen.third.third_first)
       expectToBeImmutableAndThrowError(frozen)
-      expectToBeImmutableAndThrowError(frozen.lola)
-    })
-    it('', function () {
-      const { frozen } = buildMockArrayDeepFrozen()
-      expectToBeImmutableAndThrowError(frozen)
-      expectToBeImmutableAndThrowError(frozen[0])
+      expectToBeImmutableAndThrowError(frozen.first)
+      expectToBeImmutableAndThrowError(frozen.third.third_first)
     })
   })
 })

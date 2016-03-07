@@ -30,10 +30,18 @@ export const createMockObject = () => {
 
 export const createMockNestedObject = () => {
   return {
-    lola: {
-      name: 'david'
+    first: {
+      property: 'david'
     },
-    name: 'carlesba'
+    second: 'carlesba',
+    third: {
+      third_first: {
+        property: 'nestedObject'
+      },
+      third_scond: {
+        property: 3
+      }
+    }
   }
 }
 
@@ -59,6 +67,6 @@ export const mockFrozenBuilder = (method, source) => {
 }
 
 export const buildMockObjectFrozen = () => mockFrozenBuilder(freeze, createMockObject())
-export const buildMockObjectDeepFrozen = () => mockFrozenBuilder(deepFreeze, createMockNestedObject())
 export const buildMockArrayFrozen = () => mockFrozenBuilder(freeze, createMockArray())
+export const buildMockObjectDeepFrozen = () => mockFrozenBuilder(deepFreeze, createMockNestedObject())
 export const buildMockArrayDeepFrozen = () => mockFrozenBuilder(deepFreeze, createMockNestedArray())
