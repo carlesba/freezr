@@ -1,5 +1,5 @@
 import expect from 'expect'
-import { FrozenArray } from '../src/index'
+import FrozenArray from '../src/FrozenArray'
 import {
   createMockArray,
   buildMockArrayFrozen,

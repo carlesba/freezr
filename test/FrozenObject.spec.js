@@ -1,5 +1,6 @@
 import expect from 'expect'
-import { FrozenObject } from '../src/index'
+import FrozenObject from '../src/FrozenObject'
+
 import {
   buildMockObjectFrozen,
   expectToBeImmutableAndThrowError

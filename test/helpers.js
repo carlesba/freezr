@@ -1,5 +1,5 @@
 import expect from 'expect'
-import {freezr} from '../src/Freezr'
+import { freezr } from '../src/freezr'
 
 export const createMockArray = () => {
   return [
