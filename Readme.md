@@ -32,7 +32,7 @@ var obj = {a: 1, b: 2}
 
 var frozenObj = freezeObject(obj) // fozenObj is immutable
 
-frozenObj.a = 3 // throw an exeception because: 'cannot be mutated'
+frozenObj.a = 3 // throw an exception because: 'cannot be mutated'
 frozenObj.a === 1 // true
 
 //
@@ -41,7 +41,7 @@ frozenObj.a === 1 // true
 var arr = [1, 2, 3]
 var frozenArr = freezeArray(arr)
 frozenArr[2] === 3 // true
-frozenArr[2] = 'new value' // throw an execption: 'cannot be mutated'
+frozenArr[2] = 'new value' // throw an exception: 'cannot be mutated'
 frozenArr[2] === 3 // still true
 
 //
@@ -54,7 +54,7 @@ var mapped = frozenArr.map((value, index) => {
 //
 // Array methods return frozen elements
 //
-mapped[0] = 'mutate the array' // throw an execption
+mapped[0] = 'mutate the array' // throw an exception
 mapped[0] === 2 // true
 
 
