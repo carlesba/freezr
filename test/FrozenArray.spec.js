@@ -1,24 +1,10 @@
 import expect from 'expect'
 import FrozenArray from '../src/FrozenArray'
-import { expectToBeImmutableAndThrowError } from './helpers'
-import { freeze } from '../src/freezers'
-
-const createMockArray = () => {
-  return [
-    1,
-    2,
-    () => 3,
-    true,
-    {a: 1}
-  ]
-}
-
-const buildMockArrayFrozen = (source = createMockArray()) => {
-  return {
-    source,
-    frozen: freeze(source)
-  }
-}
+import {
+  createMockArray,
+  buildMockArrayFrozen,
+  expectToBeImmutableAndThrowError
+} from './helpers'
 
 const expectToExecuteMethodPerItem = (methodName) => {
   const {frozen} = buildMockArrayFrozen()

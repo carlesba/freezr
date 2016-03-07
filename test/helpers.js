@@ -1,20 +1,5 @@
 import expect from 'expect'
-import { freeze } from '../src/freezers'
-
-export const createMockObject = () => {
-  return {
-    a: 1,
-    b: 2,
-    c: () => 3
-  }
-}
-
-export const buildMockObjectFrozen = (source = createMockObject()) => {
-  return {
-    source,
-    frozen: freeze(source)
-  }
-}
+import { freeze, deepFreeze } from '../src/freezers'
 
 export const expectToBeImmutableAndThrowError = (target) => {
   const firstKey = Object.keys(target)[0]
@@ -24,3 +9,56 @@ export const expectToBeImmutableAndThrowError = (target) => {
   }).toThrow()
   expect(target[firstKey]).toBe(firstValue)
 }
+
+export const createMockArray = () => {
+  return [
+    1,
+    2,
+    () => 3,
+    true,
+    {a: 1}
+  ]
+}
+
+export const createMockObject = () => {
+  return {
+    a: 1,
+    b: 2,
+    c: () => 3
+  }
+}
+
+export const createMockNestedObject = () => {
+  return {
+    lola: {
+      name: 'david'
+    },
+    name: 'carlesba'
+  }
+}
+
+export const createMockNestedArray = () => {
+  return [
+    {
+      lola: {
+        name: 'david'
+      },
+      name: 'carlesba'
+    },
+    2,
+    () => 3,
+    'freezing'
+  ]
+}
+
+export const mockFrozenBuilder = (method, source) => {
+  return {
+    frozen: method(source),
+    source
+  }
+}
+
+export const buildMockObjectFrozen = () => mockFrozenBuilder(freeze, createMockObject())
+export const buildMockObjectDeepFrozen = () => mockFrozenBuilder(deepFreeze, createMockNestedObject())
+export const buildMockArrayFrozen = () => mockFrozenBuilder(freeze, createMockArray())
+export const buildMockArrayDeepFrozen = () => mockFrozenBuilder(deepFreeze, createMockNestedArray())

@@ -1,44 +1,10 @@
-import { expectToBeImmutableAndThrowError } from './helpers'
-import { freeze, deepFreeze } from '../src/freezers'
-
-const createMockArray = () => {
-  return [
-    1,
-    2,
-    () => 3,
-    true,
-    {a: 1}
-  ]
-}
-
-const createMockObject = () => {
-  return {
-    a: 1,
-    b: 2,
-    c: () => 3
-  }
-}
-
-const buildMockObjectFrozen = (source = createMockObject()) => {
-  return {
-    source,
-    frozen: freeze(source)
-  }
-}
-
-const buildMockArrayFrozen = (source = createMockArray()) => {
-  return {
-    source,
-    frozen: freeze(source)
-  }
-}
-
-const buildMockObjectDeepFrozen = (source = createMockObject()) => {
-  return {
-    source,
-    frozen: deepFreeze(source)
-  }
-}
+import {
+  buildMockObjectFrozen,
+  buildMockObjectDeepFrozen,
+  buildMockArrayFrozen,
+  buildMockArrayDeepFrozen,
+  expectToBeImmutableAndThrowError
+} from './helpers'
 
 describe('freezr', function () {
   it('returns an immutable object', () => {
@@ -53,15 +19,14 @@ describe('freezr', function () {
 
   describe('deepFreezr', function () {
     it('', function () {
-      const obj = {
-        lola: {
-          name: 'david'
-        },
-        name: 'carlesba'
-      }
-      const { frozen } = buildMockObjectDeepFrozen(obj)
+      const { frozen } = buildMockObjectDeepFrozen()
       expectToBeImmutableAndThrowError(frozen)
       expectToBeImmutableAndThrowError(frozen.lola)
+    })
+    it('', function () {
+      const { frozen } = buildMockArrayDeepFrozen()
+      expectToBeImmutableAndThrowError(frozen)
+      expectToBeImmutableAndThrowError(frozen[0])
     })
   })
 })
