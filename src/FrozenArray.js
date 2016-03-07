@@ -1,7 +1,7 @@
 import { createProperty } from './utils'
 
 class FrozenArray {
-  constructor(source) {
+  constructor (source) {
     const sourceProps = source.reduce(
       (acc, value, index) => {
         acc[index] = createProperty(value)
@@ -16,76 +16,76 @@ class FrozenArray {
     })
     Object.freeze(this)
   }
-  get length() {
+  get length () {
     return this.__source__.length
   }
-  get isFrozen() {
+  get isFrozen () {
     return true
   }
-  concat(arr) {
+  concat (arr) {
     const output = this.__source__.concat(arr)
     return new FrozenArray(output)
   }
-  forEach(callback) {
+  forEach (callback) {
     return this.__source__.forEach(callback)
   }
-  map(callback) {
+  map (callback) {
     return new FrozenArray(this.__source__.map(callback))
   }
-  reduce(callback, acc) {
+  reduce (callback, acc) {
     return this.__source__.reduce(callback, acc)
   }
-  filter(callback) {
+  filter (callback) {
     return new FrozenArray(this.__source__.filter(callback))
   }
-  push() {
+  push () {
     const target = this.__source__.concat([])
     target.push.apply(target, arguments)
     return new FrozenArray(target)
   }
-  pop() {
+  pop () {
     const target = this.__source__.concat([])
     target.pop()
     return new FrozenArray(target)
   }
-  shift() {
+  shift () {
     const target = this.__source__.concat([])
     target.shift()
     return new FrozenArray(target)
   }
-  unshift() {
+  unshift () {
     const target = this.__source__.concat([])
     target.unshift.apply(target, arguments)
     return new FrozenArray(target)
   }
-  join(separator) {
+  join (separator) {
     return this.__source__.join(separator)
   }
-  find(callback, context) {
+  find (callback, context) {
     return this.__source__.find(callback, context)
   }
-  findIndex(callback, context) {
+  findIndex (callback, context) {
     return this.__source__.findIndex(callback, context)
   }
-  indexOf(target) {
+  indexOf (target) {
     return this.__source__.indexOf(target)
   }
-  reverse() {
+  reverse () {
     const target = this.__source__.concat([])
     target.reverse()
     return new FrozenArray(target)
   }
-  insertAt(position, value) {
+  insertAt (position, value) {
     const target = this.__source__.concat([])
     target.splice(position, 0, value)
     return new FrozenArray(target)
   }
-  deleteAt(position) {
+  deleteAt (position) {
     const target = this.__source__.concat([])
     target.splice(position, 1)
     return new FrozenArray(target)
   }
-  update(position, value) {
+  update (position, value) {
     const target = this.__source__.concat([])
     target.splice(position, 1, value)
     return new FrozenArray(target)
