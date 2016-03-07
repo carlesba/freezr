@@ -19,19 +19,23 @@ export const freeze = (source) => {
   }
 }
 
-const recursiveFreeze = (source, key) => {
+const recursiveObject = (source, key) => {
   let o = {}
+  Object.assign(o, keyIterator(source, (value, key) => recursiveFreeze(value, key)))
+  if (!isPlainObj(source)) o[key] = source
+  return freeze(o)
+}
+
+const recursiveFreeze = (source) => {
   if (isPlainObj(source)) {
-    Object.assign(o, keyIterator(source, (value, key) => recursiveFreeze(value, key)))
-  } else {
-    o[key] = source
+    return recursiveObject(source)
   }
 
   if (Array.isArray(source)) {
-    return source.map(value => recursiveFreeze(value))
+    return freeze(source.map(value => recursiveFreeze(value)))
   }
 
-  return freeze(o)
+  return source
 }
 
 const keyIterator = (obj, fn) => {
