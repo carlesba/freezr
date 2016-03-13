@@ -11,7 +11,7 @@
     "start": "npm run dev:watch",
     "clean": "rimraf dist",
     "build": "./node_modules/.bin/babel src --out-dir lib",
-    "prepublish": "npm run clean && npm run build"
+    "prepublish": "npm run test && npm run clean && npm run build"
   },
   "keywords": [
     "immutable",
