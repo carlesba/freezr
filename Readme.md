@@ -17,6 +17,12 @@ There are lots of libraries to build immutable data but most of them avoid the n
 - Provide methods to work in an immutable way when the native ones don't.
 - All methods will return another immutable object.
 
+## Install
+
+```
+npm install freezr --save-dev
+```
+
 ## Examples
 
 ```js
