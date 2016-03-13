@@ -1,7 +1,5 @@
 # Freezr
 
-***(wip) this is an alpha version. Just a proposal***
-
 (Another) Library to build your immutable data structure.
 
 ## Concerns
@@ -77,7 +75,4 @@ frozenObject.delete('a') // will return another frozen object without 'a'
 
 ```
 
-## To Do
-
-Create a deep parser.
 
