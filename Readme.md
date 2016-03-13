@@ -16,7 +16,6 @@ There are lots of libraries to build immutable data but most of them avoid the n
 - Keep **native interface** for reading data.
 - Provide methods to work in an immutable way when the native ones don't.
 - All methods will return another immutable object.
-- Throw an Error when it has tried to mutate an Immutable Object.
 
 ## Examples
 
@@ -29,8 +28,9 @@ import {freeze} from 'freezr'
 var obj = {a: 1, b: 2}
 
 var frozenObj = freeze(obj) // fozenObj is immutable
+// Alternatively you could use deepFreeze to parse to object completely
 
-frozenObj.a = 3 // throw an exception because: 'cannot be mutated'
+frozenObj.a = 3 // won't change
 frozenObj.a === 1 // true
 
 //
@@ -39,7 +39,7 @@ frozenObj.a === 1 // true
 var arr = [1, 2, 3]
 var frozenArr = freeze(arr)
 frozenArr[2] === 3 // true
-frozenArr[2] = 'new value' // throw an exception: 'cannot be mutated'
+frozenArr[2] = 'new value' // won't change
 frozenArr[2] === 3 // still true
 
 //
@@ -52,7 +52,7 @@ var mapped = frozenArr.map((value, index) => {
 //
 // Array methods return frozen elements
 //
-mapped[0] = 'mutate the array' // throw an exception
+mapped[0] = 'mutate the array' // won't change
 mapped[0] === 2 // true
 
 
