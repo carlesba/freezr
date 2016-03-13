@@ -2,16 +2,21 @@
   "name": "freezr",
   "version": "0.0.1",
   "description": "Immutable data with native interface (and some sugar)",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register --recursive",
     "dev:watch": "mocha --compilers js:babel-register --recursive -w",
     "dev:reporter": "mocha --compilers js:babel-register --recursive -w --reporter mocha-osx-reporter",
-    "start": "npm run dev:watch"
+    "start": "npm run dev:watch",
+    "clean": "rimraf dist",
+    "build": "./node_modules/.bin/babel src --out-dir lib",
+    "prepublish": "npm run clean && npm run build"
   },
   "keywords": [
     "immutable",
-    "javascript"
+    "javascript",
+    "model"
   ],
   "author": "Carles Ballester <carlesba.js@gmail.com> @carlesba",
   "license": "MIT",
@@ -23,6 +28,7 @@
     "expect": "^1.14.0",
     "mocha": "^2.4.5",
     "mocha-osx-reporter": "^0.1.2",
+    "rimraf": "^2.5.2",
     "standard": "^6.0.7"
   },
   "standard": {
