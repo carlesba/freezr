@@ -11,7 +11,7 @@ class FrozenArray {
     )
     Object.defineProperties(this, sourceProps)
     Object.defineProperty(this, '__source__', {
-      get: () => source,
+      value: source,
       enumberable: false
     })
     Object.freeze(this)

@@ -16,11 +16,11 @@ const buildMockFrozen = (source = createMockObject()) => {
   }
 }
 
-const expectToBeImmutableAndThrowError = (target) => {
+const expectToBeImmutable = (target) => {
   const firstKey = Object.keys(target)[0]
   const firstValue = target[firstKey]
   expect(() => {
-    target[firstKey] = firstValue + 1
+    target[firstKey] = 'asdfasdf'
   }).toThrow()
   expect(target[firstKey]).toBe(firstValue)
 }
@@ -35,9 +35,7 @@ describe('FrozenObject', () => {
     })
     it('throw an error when try to mutate a property', () => {
       const {frozen} = buildMockFrozen()
-      expect(() => {
-        frozen.a = 2
-      }).toThrow()
+      expectToBeImmutable(frozen)
     })
   })
 
@@ -52,7 +50,7 @@ describe('FrozenObject', () => {
       Object.keys(native).forEach((key) => {
         expect(target[key]).toBe(native[key])
       })
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
     })
   })
 
@@ -69,7 +67,7 @@ describe('FrozenObject', () => {
           expect(target[key]).toBe(frozen[key])
         }
       })
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
     })
   })
 
@@ -85,7 +83,7 @@ describe('FrozenObject', () => {
           expect(target[key]).toBe(frozen[key])
         }
       })
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
     })
   })
 })

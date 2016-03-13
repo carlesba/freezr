@@ -19,13 +19,12 @@ const buildMockFrozen = (source = createMockArray()) => {
   }
 }
 
-const expectToBeImmutableAndThrowError = (target) => {
-  const firstKey = Object.keys(target)[0]
-  const firstValue = target[firstKey]
+const expectToBeImmutable = (target) => {
+  const firstValue = target[0]
   expect(() => {
-    target[firstKey] = firstValue + 1
+    target[0] = 123123
   }).toThrow()
-  expect(target[firstKey]).toBe(firstValue)
+  expect(target[0]).toBe(firstValue)
 }
 
 const expectToExecuteMethodPerItem = (methodName) => {
@@ -48,7 +47,7 @@ describe('FrozenArray', () => {
   describe(':constructor', () => {
     it('returns an immutable object', () => {
       const {frozen} = buildMockFrozen()
-      expectToBeImmutableAndThrowError(frozen)
+      expectToBeImmutable(frozen)
     })
     it('returns an array with the value as the original one', () => {
       const source = createMockArray()
@@ -166,7 +165,7 @@ describe('FrozenArray', () => {
       expect(target.length).toBe(frozen.length + 2, 'bad length')
       expect(target[target.length - 2]).toBe(addedElement1, 'not in the last position')
       expect(target[target.length - 1]).toBe(addedElement2, 'not in the last position')
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
     })
   })
 
@@ -174,7 +173,7 @@ describe('FrozenArray', () => {
     it('returns a new frozenArray without the last element', () => {
       const {frozen} = buildMockFrozen()
       const target = frozen.pop()
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
       expect(target.length).toBe(frozen.length - 1, 'bad length')
       frozen.forEach((value, index) => {
         if (index < frozen.length - 1) {
@@ -190,7 +189,7 @@ describe('FrozenArray', () => {
     it('returns a new frozenArray without the first element', () => {
       const {frozen} = buildMockFrozen()
       const target = frozen.shift()
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
       expect(target.length).toBe(frozen.length - 1, 'bad length')
       frozen.forEach((value, index) => {
         if (index === 0) {
@@ -211,7 +210,7 @@ describe('FrozenArray', () => {
       expect(target.length).toBe(frozen.length + 2, 'bad length')
       expect(target[0]).toBe(addedElement1, 'bad first element')
       expect(target[1]).toBe(addedElement2, 'bad second element')
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
     })
   })
 
@@ -276,7 +275,7 @@ describe('FrozenArray', () => {
       const position = 1
       const newValue = {foo: 'moo'}
       const target = frozen.insertAt(position, newValue)
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
       expect(target[position]).toBe(newValue, 'bad insertion')
       expect(target.length).toBe(frozen.length + 1, 'bad length')
     })
@@ -287,7 +286,7 @@ describe('FrozenArray', () => {
       const {frozen} = buildMockFrozen()
       const position = 1
       const target = frozen.deleteAt(position)
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
       expect(target.length).toBe(frozen.length - 1, 'bad length')
       frozen.forEach((value, index) => {
         if (index < position) {
@@ -305,7 +304,7 @@ describe('FrozenArray', () => {
       const position = 1
       const newValue = {foo: 'moo'}
       const target = frozen.update(position, newValue)
-      expectToBeImmutableAndThrowError(target)
+      expectToBeImmutable(target)
       expect(target[position]).toBe(newValue, 'bad insertion')
       expect(target.length).toBe(frozen.length, 'bad length')
     })
