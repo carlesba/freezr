@@ -23,14 +23,14 @@ There are lots of libraries to build immutable data but most of them avoid the n
 ## Examples
 
 ```js
-import {freezeObject, freezeArray} from 'freezr'
+import {freeze} from 'freezr'
 
 //
 // Frozen Objects
 //
 var obj = {a: 1, b: 2}
 
-var frozenObj = freezeObject(obj) // fozenObj is immutable
+var frozenObj = freeze(obj) // fozenObj is immutable
 
 frozenObj.a = 3 // throw an exception because: 'cannot be mutated'
 frozenObj.a === 1 // true
@@ -39,7 +39,7 @@ frozenObj.a === 1 // true
 // Frozen Arrays.
 //
 var arr = [1, 2, 3]
-var frozenArr = freezeArray(arr)
+var frozenArr = freeze(arr)
 frozenArr[2] === 3 // true
 frozenArr[2] = 'new value' // throw an exception: 'cannot be mutated'
 frozenArr[2] === 3 // still true
