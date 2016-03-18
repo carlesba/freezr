@@ -37,5 +37,32 @@ class FrozenObject {
     const target = Object.assign({}, this.__source__, update)
     return new FrozenObject(target)
   }
+  setIn (keyPath, value) {
+    const nextKey = keyPath[0]
+    if (keyPath.length > 1) {
+      return this.set(
+        nextKey,
+        this[nextKey].setIn(keyPath.slice(1), value)
+      )
+    } else if (keyPath.length === 1) {
+      return this.set(nextKey, value)
+    } else {
+      return this
+    }
+  }
+  updateIn (keyPath, updater) {
+    const nextKey = keyPath[0]
+    if (keyPath.length > 1) {
+      return this.set(
+        nextKey,
+        this[nextKey].updateIn(keyPath.slice(1), updater)
+      )
+    } else if (keyPath.length === 1) {
+      return this.set(nextKey, updater(this[nextKey]))
+    } else {
+      return this
+    }
+  }
 }
+
 export default FrozenObject
