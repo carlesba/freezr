@@ -37,6 +37,9 @@ class FrozenObject {
     const target = Object.assign({}, this.__source__, update)
     return new FrozenObject(target)
   }
+  update (key, updater) {
+    return this.set(key, updater(this[key]))
+  }
   setIn (keyPath, value) {
     const nextKey = keyPath[0]
     if (keyPath.length > 1) {

@@ -76,6 +76,22 @@ describe('FrozenObject', () => {
     })
   })
 
+  describe('.update', () => {
+    it('returns a new FrozenObject with the value passed by the updater', () => {
+      const {frozen} = buildMockFrozen()
+      const newValue = {foo: 'newValue'}
+      const updater = () => newValue
+      const target = frozen.update('d', updater)
+      expect(target.d).toBe(newValue)
+    })
+    it('executes the updater callback with the object pointed by the key', () => {
+      const {frozen} = buildMockFrozen()
+      const updater = createSpy()
+      frozen.update('d', updater)
+      expect(updater).toHaveBeenCalledWith(frozen.d)
+    })
+  })
+
   describe('.delete', () => {
     it('returns a new FrozenObject without the specified key', () => {
       const {frozen} = buildMockFrozen()
