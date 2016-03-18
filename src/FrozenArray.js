@@ -85,10 +85,39 @@ class FrozenArray {
     target.splice(position, 1)
     return new FrozenArray(target)
   }
-  update (position, value) {
+  set (position, value) {
     const target = this.__source__.concat([])
     target.splice(position, 1, value)
     return new FrozenArray(target)
+  }
+  update (position, updater) {
+    return this.set(position, updater(this[position]))
+  }
+  setIn (keyPath, value) {
+    const nextIndex = keyPath[0]
+    if (keyPath.length > 1) {
+      return this.set(
+        nextIndex,
+        this[nextIndex].setIn(keyPath.slice(1), value)
+      )
+    } else if (keyPath.length === 1) {
+      return this.set(nextIndex, value)
+    } else {
+      return this
+    }
+  }
+  updateIn (keyPath, updater) {
+    const nextIndex = keyPath[0]
+    if (keyPath.length > 1) {
+      return this.set(
+        nextIndex,
+        this[nextIndex].updateIn(keyPath.slice(1), updater)
+      )
+    } else if (keyPath.length === 1) {
+      return this.update(nextIndex, updater)
+    } else {
+      return this
+    }
   }
 }
 

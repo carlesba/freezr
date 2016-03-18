@@ -1,5 +1,6 @@
-import expect from 'expect'
+import expect, {createSpy} from 'expect'
 import FrozenArray from '../src/FrozenArray'
+import deepFreeze from '../src/deepFreeze'
 /*
   UTILS
  */
@@ -9,7 +10,7 @@ const createMockArray = () => {
     2,
     () => 3,
     true,
-    {a: 1}
+    {a: [1, 2]}
   ]
 }
 const buildMockFrozen = (source = createMockArray()) => {
@@ -298,15 +299,68 @@ describe('FrozenArray', () => {
     })
   })
 
-  describe('.update', () => {
+  describe('.set', () => {
     it('returns a new FrozenArray with the value at position specified updated', () => {
       const {frozen} = buildMockFrozen()
       const position = 1
       const newValue = {foo: 'moo'}
-      const target = frozen.update(position, newValue)
+      const target = frozen.set(position, newValue)
       expectToBeImmutable(target)
       expect(target[position]).toBe(newValue, 'bad insertion')
       expect(target.length).toBe(frozen.length, 'bad length')
+    })
+  })
+  describe('.update', () => {
+    it('passes the object to update as an argument for the passed callback', () => {
+      const {frozen} = buildMockFrozen()
+      const position = 1
+      const updater = createSpy()
+      frozen.update(position, updater)
+      expect(updater).toHaveBeenCalledWith(frozen[position])
+    })
+    it('updates the object with the value provided by the callback', () => {
+      const {frozen} = buildMockFrozen()
+      const position = 1
+      const newValue = {foo: 'moo'}
+      const updater = () => newValue
+      const target = frozen.update(position, updater)
+      expectToBeImmutable(target)
+      expect(target[position]).toBe(newValue)
+      expect(target.length).toBe(frozen.length)
+    })
+  })
+  describe('.setIn', () => {
+    it('returns a new FrozenArray with the deep value updated', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const newValue = 'newValue'
+      const target = frozen.setIn([4, 'a', 0], newValue)
+      expect(target[4]['a'][0]).toBe(newValue)
+    })
+    it('returns a new FrozenArray for each level where a value has change', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const newValue = 'newValue'
+      const target = frozen.setIn([4, 'a', 0], newValue)
+      expect(target[4]).toNotBe(frozen[4])
+      expect(target[4]['a']).toNotBe(frozen[4]['a'])
+    })
+  })
+  describe('.updateIn', () => {
+    it('passes the object to update as an argument for the passed callback', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const updater = createSpy()
+      frozen.updateIn([4, 'a'], updater)
+      expect(updater).toHaveBeenCalledWith(frozen[4]['a'])
+    })
+    it('updates the object with the value provided by the callback', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const newValue = 'newValue'
+      const updater = () => newValue
+      const target = frozen.updateIn([4, 'a'], updater)
+      expect(target[4]['a']).toBe(newValue)
     })
   })
 })
