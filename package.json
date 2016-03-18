@@ -1,9 +1,16 @@
 {
   "name": "freezr",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Immutable data with native interface (and some sugar)",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
+  "bugs": {
+    "url": "https://github.com/carlesba/freezr/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlesba/freezr"
+  },
   "scripts": {
     "test": "mocha --compilers js:babel-register --recursive",
     "dev:watch": "mocha --compilers js:babel-register --recursive -w",
