@@ -1,15 +1,6 @@
-import createProperty from './createProperty'
-
 class FrozenObject {
   constructor (source) {
-    const properties = Object.keys(source).reduce(
-      (acc, key) => {
-        acc[key] = createProperty(source[key])
-        return acc
-      },
-      {}
-    )
-    Object.defineProperties(this, properties)
+    Object.assign(this, source)
     Object.defineProperty(this, '__source__', {
       value: source,
       enumberable: false

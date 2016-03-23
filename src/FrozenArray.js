@@ -1,15 +1,6 @@
-import createProperty from './createProperty'
-
 class FrozenArray {
   constructor (source) {
-    const sourceProps = source.reduce(
-      (acc, value, index) => {
-        acc[index] = createProperty(value)
-        return acc
-      },
-      {}
-    )
-    Object.defineProperties(this, sourceProps)
+    Object.assign(this, source)
     Object.defineProperty(this, '__source__', {
       value: source,
       enumberable: false
