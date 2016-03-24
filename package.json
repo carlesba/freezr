@@ -12,7 +12,8 @@
     "url": "https://github.com/carlesba/freezr"
   },
   "scripts": {
-    "test": "npm run linter; mocha --compilers js:babel-register --recursive",
+    "test": "npm run linter; npm run testing",
+    "testing": "mocha --compilers js:babel-register --recursive",
     "dev:watch": "mocha --compilers js:babel-register --recursive -w",
     "dev:reporter": "mocha --compilers js:babel-register --recursive -w --reporter mocha-osx-reporter",
     "start": "npm run dev:watch",
