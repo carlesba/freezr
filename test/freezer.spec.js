@@ -1,9 +1,8 @@
 import expect from 'expect'
-import {FrozenObject, FrozenArray} from '../src/index'
 import freeze from '../src/freeze'
 
 describe('freeze', () => {
-  it('returns a FrozenObject when passing an object', () => {
+  it('returns an immutable object when passing an object', () => {
     const target = {
       a: {
         foo: 'foo',
@@ -12,12 +11,12 @@ describe('freeze', () => {
       b: 2
     }
     const result = freeze(target)
-    expect(result instanceof FrozenObject).toBe(true, 'not instance of FrozenObject')
+    expect(result.isImmutable).toBe(true)
   })
   it('returns a FrozenArray when passing an array', () => {
     const target = [1, {a: 1, b: 2}, 3]
     const result = freeze(target)
-    expect(result instanceof FrozenArray).toBe(true, 'not instance of FrozenArray')
+    expect(result.isImmutable).toBe(true)
   })
   it('keeps a function as it is', () => {
     const target = function () {}

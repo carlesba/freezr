@@ -1,11 +1,11 @@
 import expect, {createSpy} from 'expect'
-import FrozenObject from '../src/FrozenObject'
+import freezeObject from '../src/freezeObject'
 import deepFreeze from '../src/deepFreeze'
 
 const createMockObject = () => {
   return {
-    a: 1,
-    b: 2,
+    a: Symbol(1),
+    b: Symbol(2),
     c: () => 3,
     d: {
       e: 5,
@@ -17,7 +17,7 @@ const createMockObject = () => {
 const buildMockFrozen = (source = createMockObject()) => {
   return {
     source,
-    frozen: new FrozenObject(source)
+    frozen: freezeObject(source)
   }
 }
 
@@ -25,12 +25,12 @@ const expectToBeImmutable = (target) => {
   const firstKey = Object.keys(target)[0]
   const firstValue = target[firstKey]
   expect(() => {
-    target[firstKey] = 'asdfasdf'
+    target[firstKey] = Symbol('new value')
   }).toThrow()
   expect(target[firstKey]).toBe(firstValue)
 }
 
-describe('FrozenObject', () => {
+describe('freezeObject', () => {
   describe(':constructor', () => {
     it('returns an object with all the props from the source', () => {
       const {source, frozen} = buildMockFrozen()
@@ -38,18 +38,24 @@ describe('FrozenObject', () => {
         expect(source[key]).toBe(frozen[key])
       })
     })
-    it('throw an error when try to mutate a property', () => {
+    it('returns an immutable object', () => {
       const {frozen} = buildMockFrozen()
       expectToBeImmutable(frozen)
+    })
+    it('returns an object with the same iterable keys', () => {
+      const {source, frozen} = buildMockFrozen()
+      const sourceKeys = Object.keys(source)
+      const frozenKeys = Object.keys(frozen)
+      expect(frozenKeys).toEqual(sourceKeys)
     })
   })
 
   describe('.merge', () => {
-    it('returns a new FrozenObject with the extended values', () => {
+    it('returns a frozen object with the extended values', () => {
       const mock = {a: 1, b: 2, c: 3}
       const extension = {a: 'a', b: 'b', d: 'd'}
       const extension2 = {a: false, e: true}
-      const frozen = new FrozenObject(mock)
+      const frozen = freezeObject(mock)
       const native = Object.assign({}, mock, extension, extension2)
       const target = frozen.merge(extension, extension2)
       Object.keys(native).forEach((key) => {
@@ -60,14 +66,15 @@ describe('FrozenObject', () => {
   })
 
   describe('.set', () => {
-    it('returns a new FrozenObject with a new value for the specified key', () => {
+    it('returns a frozen object with a new value for the specified key', () => {
       const {frozen} = buildMockFrozen()
-      const aValue = frozen.a
-      const target = frozen.set('a', aValue + 1)
-      expect(target.a).toBe(aValue + 1)
+      const oldValue = frozen.a
+      const newValue = Symbol('new value')
+      const target = frozen.set('a', newValue)
       Object.keys(frozen).forEach((key) => {
         if (key === 'a') {
-          expect(target[key]).toBe(aValue + 1)
+          expect(frozen[key]).toBe(oldValue)
+          expect(target[key]).toBe(newValue)
         } else {
           expect(target[key]).toBe(frozen[key])
         }
@@ -77,7 +84,7 @@ describe('FrozenObject', () => {
   })
 
   describe('.update', () => {
-    it('returns a new FrozenObject with the value passed by the updater', () => {
+    it('returns a frozen object with the value passed by the updater', () => {
       const {frozen} = buildMockFrozen()
       const newValue = {foo: 'newValue'}
       const updater = () => newValue
@@ -93,7 +100,7 @@ describe('FrozenObject', () => {
   })
 
   describe('.delete', () => {
-    it('returns a new FrozenObject without the specified key', () => {
+    it('returns a frozen object without the specified key', () => {
       const {frozen} = buildMockFrozen()
       const deletedKey = 'a'
       const target = frozen.delete(deletedKey)
@@ -108,14 +115,14 @@ describe('FrozenObject', () => {
     })
   })
   describe('.setIn', () => {
-    it('returns a new FrozenObject with the deep value updated', () => {
+    it('returns a frozen object with the deep value updated', () => {
       const input = createMockObject()
       const frozen = deepFreeze(input)
       const newValue = 'newValue'
       const target = frozen.setIn(['d', 'e'], newValue)
       expect(target.d.e).toBe(newValue)
     })
-    it('returns a new FrozenObject for each level where a value has change', () => {
+    it('returns a frozen object for each level where a value has change', () => {
       const input = createMockObject()
       const frozen = deepFreeze(input)
       const newValue = 'newValue'

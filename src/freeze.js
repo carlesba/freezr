@@ -1,16 +1,15 @@
-import FrozenObject from './FrozenObject'
-import FrozenArray from './FrozenArray'
+import freezeObject from './freezeObject'
+import freezeArray from './freezeArray'
 import {isPlainObj} from './utils'
 /*
   Create instances usint the constructors
 */
 export default function freeze (source) {
   if (isPlainObj(source)) {
-    return new FrozenObject(source)
+    return freezeObject(source)
   } else if (Array.isArray(source)) {
-    return new FrozenArray(source)
+    return freezeArray(source)
   } else {
     return source
   }
 }
-

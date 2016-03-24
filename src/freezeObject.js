@@ -1,36 +1,25 @@
-class FrozenObject {
-  constructor (source) {
-    Object.assign(this, source)
-    Object.defineProperty(this, '__source__', {
-      value: source,
-      enumberable: false
-    })
-    Object.freeze(this)
-  }
-  get isFrozen () {
-    return true
-  }
+const FrozenObject = {
   merge () {
     const args = Array.prototype.concat
       .apply([this.__source__], arguments)
     args.unshift({})
     const target = Object.assign.apply(null, args)
-    return new FrozenObject(target)
-  }
+    return freezeObject(target)
+  },
   delete (key) {
     const target = Object.assign({}, this.__source__)
     delete target[key]
-    return new FrozenObject(target)
-  }
+    return freezeObject(target)
+  },
   set (key, value) {
     let update = {}
     update[key] = value
     const target = Object.assign({}, this.__source__, update)
-    return new FrozenObject(target)
-  }
+    return freezeObject(target)
+  },
   update (key, updater) {
     return this.set(key, updater(this[key]))
-  }
+  },
   setIn (keyPath, value) {
     const nextKey = keyPath[0]
     if (keyPath.length > 1) {
@@ -43,7 +32,7 @@ class FrozenObject {
     } else {
       return this
     }
-  }
+  },
   updateIn (keyPath, updater) {
     const nextKey = keyPath[0]
     if (keyPath.length > 1) {
@@ -59,4 +48,18 @@ class FrozenObject {
   }
 }
 
-export default FrozenObject
+export default function freezeObject (source) {
+  const target = Object.create(FrozenObject)
+  Object.defineProperties(target, {
+    '__source__': {
+      value: source,
+      enumberable: false
+    },
+    'isImmutable': {
+      value: true,
+      enumberable: false
+    }
+  })
+  Object.assign(target, source)
+  return Object.freeze(target)
+}

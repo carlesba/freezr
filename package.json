@@ -16,7 +16,7 @@
     "dev:watch": "mocha --compilers js:babel-register --recursive -w",
     "dev:reporter": "mocha --compilers js:babel-register --recursive -w --reporter mocha-osx-reporter",
     "start": "npm run dev:watch",
-    "clean": "rimraf lib",
+    "clean": "rm -rf lib",
     "build": "./node_modules/.bin/babel src --out-dir lib",
     "prepublish": "npm run test && npm run clean && npm run build",
     "postpublish": "npm run clean"
@@ -36,7 +36,6 @@
     "expect": "^1.14.0",
     "mocha": "^2.4.5",
     "mocha-osx-reporter": "^0.1.2",
-    "rimraf": "^2.5.2",
     "standard": "^6.0.7"
   },
   "standard": {

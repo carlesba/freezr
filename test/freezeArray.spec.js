@@ -1,13 +1,13 @@
 import expect, {createSpy} from 'expect'
-import FrozenArray from '../src/FrozenArray'
+import freezeArray from '../src/freezeArray'
 import deepFreeze from '../src/deepFreeze'
 /*
   UTILS
  */
 const createMockArray = () => {
   return [
-    1,
-    2,
+    Symbol(1),
+    Symbol(2),
     () => 3,
     true,
     {a: [1, 2]}
@@ -16,7 +16,7 @@ const createMockArray = () => {
 const buildMockFrozen = (source = createMockArray()) => {
   return {
     source,
-    frozen: new FrozenArray(source)
+    frozen: freezeArray(source)
   }
 }
 
@@ -44,7 +44,7 @@ const expectToPassValueIndexToCallback = (methodName) => {
 /*
   TESTS
  */
-describe('FrozenArray', () => {
+describe('freezeArray', () => {
   describe(':constructor', () => {
     it('returns an immutable object', () => {
       const {frozen} = buildMockFrozen()
@@ -52,29 +52,23 @@ describe('FrozenArray', () => {
     })
     it('returns an array with the value as the original one', () => {
       const source = createMockArray()
-      const target = new FrozenArray(source)
+      const target = freezeArray(source)
+      expect(Array.isArray(target)).toBe(true, 'not an array')
       source.forEach((key) => {
         expect(source[key]).toBe(target[key])
       })
     })
-    it('throws an error when try to mutate an object', () => {
+    it('adds isImmutable property', () => {
       const source = createMockArray()
-      const target = new FrozenArray(source)
-      expect(() => {
-        target[0] = 2
-      }).toThrow()
-    })
-    it('adds isFrozen property', () => {
-      const source = createMockArray()
-      const target = new FrozenArray(source)
-      expect(target.isFrozen).toBe(true)
+      const target = freezeArray(source)
+      expect(target.isImmutable).toBe(true)
     })
   })
 
   describe('.length', () => {
     it('returns array\'s length', () => {
       const source = createMockArray()
-      const target = new FrozenArray(source)
+      const target = freezeArray(source)
       expect(target.length).toBe(source.length)
     })
   })
@@ -95,12 +89,12 @@ describe('FrozenArray', () => {
     it('passes to the callback the value and index for each element', () => {
       expectToPassValueIndexToCallback('map')
     })
-    it('returns a new FrozenArray with the same size', () => {
+    it('returns a frozen Array with the same size', () => {
       const {frozen} = buildMockFrozen()
       const mapped = frozen.map((value) => value)
       expect(mapped.length).toBe(frozen.length, 'wrong length')
       expect(mapped).toNotBe(frozen, 'same array')
-      expect(mapped instanceof FrozenArray).toBe(true, 'not FrozenArray instance')
+      expect(mapped.isImmutable).toBe(true)
     })
   })
 
@@ -119,7 +113,7 @@ describe('FrozenArray', () => {
     it('returns another FrozenArray', () => {
       const {frozen} = buildMockFrozen()
       const filtered = frozen.filter((value) => typeof value === 'function')
-      expect(filtered instanceof FrozenArray).toBe(true)
+      expect(filtered.isImmutable).toBe(true)
     })
   })
 
@@ -153,7 +147,7 @@ describe('FrozenArray', () => {
       const {frozen} = buildMockFrozen()
       const concatFrozen = frozen.concat(['a', 'b'])
       expect(concatFrozen.length).toBe(frozen.length + 2)
-      expect(concatFrozen instanceof FrozenArray).toBe(true)
+      expect(concatFrozen.isImmutable).toBe(true)
     })
   })
 
@@ -313,7 +307,7 @@ describe('FrozenArray', () => {
   describe('.update', () => {
     it('passes the object to update as an argument for the passed callback', () => {
       const {frozen} = buildMockFrozen()
-      const position = 1
+      const position = 2
       const updater = createSpy()
       frozen.update(position, updater)
       expect(updater).toHaveBeenCalledWith(frozen[position])
