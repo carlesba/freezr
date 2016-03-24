@@ -2,6 +2,8 @@
 
 (not another) Library to build your immutable data structure.
 
+[![Build Status](https://travis-ci.org/carlesba/freezr.svg?branch=master)](https://travis-ci.org/carlesba/freezr)
+
 ## Concerns
 
 There are lots of libraries to build immutable data but most of them avoid the native interface (dotted and bracket notation) so, on one side we're solving immutability problem, but on the other we get new problems:
