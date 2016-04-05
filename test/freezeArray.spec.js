@@ -382,5 +382,13 @@ describe('freezeArray', () => {
       expect(target[3]).toBe(frozen[1])
       expect(target[4]).toBe(frozen[2])
     })
+    it('returns an immutable array', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const addedElement1 = Symbol(1)
+      const addedElement2 = Symbol(2)
+      const target = frozen.splice(1, 0, addedElement1, addedElement2)
+      expectToBeImmutable(target)
+    })
   })
 })
