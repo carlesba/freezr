@@ -95,6 +95,11 @@ const FrozenArray = Object.assign([], {
     } else {
       return this
     }
+  },
+  splice () {
+    const target = this.__source__.concat([])
+    target.splice.apply(target, arguments)
+    return freezeArray(target)
   }
 })
 

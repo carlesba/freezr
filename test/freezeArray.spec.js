@@ -357,4 +357,30 @@ describe('freezeArray', () => {
       expect(target[4]['a']).toBe(newValue)
     })
   })
+  describe('.splice', () => {
+    it('removes elements pointed at second argument from first argument', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const initialIndex = 1
+      const elementsToRemove = 2
+      const target = frozen.splice(initialIndex, elementsToRemove)
+      expect(target.length).toBe(frozen.length - elementsToRemove)
+      expect(target[0]).toBe(frozen[0])
+      expect(target[1]).toBe(frozen[3])
+      expect(target[2]).toBe(frozen[4])
+    })
+    it('adds elements at desired index', () => {
+      const input = createMockArray()
+      const frozen = deepFreeze(input)
+      const addedElement1 = Symbol(1)
+      const addedElement2 = Symbol(2)
+      const target = frozen.splice(1, 0, addedElement1, addedElement2)
+      expect(target.length).toBe(frozen.length + 2)
+      expect(target[0]).toBe(frozen[0])
+      expect(target[1]).toBe(addedElement1)
+      expect(target[2]).toBe(addedElement2)
+      expect(target[3]).toBe(frozen[1])
+      expect(target[4]).toBe(frozen[2])
+    })
+  })
 })
