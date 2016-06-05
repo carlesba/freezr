@@ -45,20 +45,14 @@ const FrozenObject = {
     } else {
       return this
     }
-  }
+  },
+  isImmutable: true
 }
 
 export default function freezeObject (source) {
   const target = Object.create(FrozenObject)
-  Object.defineProperties(target, {
-    '__source__': {
-      value: source,
-      enumberable: false
-    },
-    'isImmutable': {
-      value: true,
-      enumberable: false
-    }
+  Object.defineProperty(target, '__source__', {
+    value: source
   })
   Object.assign(target, source)
   return Object.freeze(target)

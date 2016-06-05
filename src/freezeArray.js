@@ -16,9 +16,7 @@ const FrozenArray = Object.assign([], {
     return freezeArray(this.__source__.filter(callback))
   },
   push () {
-    const target = this.__source__.concat([])
-    target.push.apply(target, arguments)
-    return freezeArray(target)
+    return freezeArray([...this.__source__, ...arguments])
   },
   pop () {
     const target = this.__source__.concat([])
@@ -100,21 +98,15 @@ const FrozenArray = Object.assign([], {
     const target = this.__source__.concat([])
     target.splice.apply(target, arguments)
     return freezeArray(target)
-  }
+  },
+  isImmutable: true
 })
 
 export default function freezeArray (source) {
-  var target = source.concat([])
+  let target = source.concat([])
   Object.setPrototypeOf(target, FrozenArray)
-  Object.defineProperties(target, {
-    '__source__': {
-      value: source,
-      enumberable: false
-    },
-    'isImmutable': {
-      value: true,
-      enumberable: false
-    }
+  Object.defineProperty(target, '__source__', {
+    value: source
   })
   return Object.freeze(target)
 }
