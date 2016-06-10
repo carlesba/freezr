@@ -13,6 +13,8 @@ There are lots of libraries to build immutable data but most of them avoid the n
 - **Problems when using other libraries**. You'd like to use that lodas method or this redux's middleare but you have to transform your immutable-data to plain objects to do it.
 - Because** *Object.freeze* it's not enough**. Although we *freeze* all our data we need to do it every time we want to update an object.
 
+Take a look to the [Docs](./docs/index.md)
+
 ## Aproach
 
 - Keep **native interface** for reading data, not for writing.
