@@ -416,6 +416,21 @@ describe('freezeArray', () => {
       expectToBeImmutable(target)
     })
   })
+  describe('.sort', () => {
+    it('returns a new frozenArray with their elements sorted', () => {
+      const source = [3, 1, 2]
+      const input = freezeArray(source)
+      const target = input.sort()
+      expect(target).toEqual(source.sort())
+    })
+    it('accepts a compareFunction to stablish the criteria', () => {
+      const source = [3, 1, 2]
+      const input = freezeArray(source)
+      const sortFunction = (a, b) => -1
+      const target = input.sort(sortFunction)
+      expect(target).toEqual(source.sort(sortFunction))
+    })
+  })
   describe('.toJS', () => {
     it('returns mutable source object', () => {
       const {source, frozen} = buildMockDeepFrozen()

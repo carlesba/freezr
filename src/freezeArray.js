@@ -111,6 +111,11 @@ const FrozenArray = Object.assign([], {
     target.splice.apply(target, arguments)
     return freezeArray(target)
   },
+  sort (compareFn) {
+    const target = this.__source__.concat([])
+    target.sort.apply(target, arguments)
+    return freezeArray(target)
+  },
   toJS () {
     return this.__source__.map((val, index) => {
       return val.isImmutable
