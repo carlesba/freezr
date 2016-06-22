@@ -108,7 +108,11 @@ const FrozenArray = Object.assign([], {
     return freezeArray(target)
   },
   toJS () {
-    return this.__source__
+    return this.__source__.map((val, index) => {
+      return val.isImmutable
+        ? val.toJS()
+        : val
+    })
   },
   isImmutable: true
 })

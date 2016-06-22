@@ -404,8 +404,11 @@ describe('freezeArray', () => {
   })
   describe('.toJS', () => {
     it('returns mutable source object', () => {
-      const {source, frozen} = buildMockFrozen()
-      expect(frozen.toJS()).toBe(source)
+      const {source, frozen} = buildMockDeepFrozen()
+      const target = frozen.toJS()
+      target.forEach((val, index) => {
+        expect(val).toEqual(source[index])
+      })
     })
   })
 })
