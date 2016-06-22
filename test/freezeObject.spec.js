@@ -21,6 +21,12 @@ const buildMockFrozen = (source = createMockObject()) => {
     frozen: freezeObject(source)
   }
 }
+const buildMockDeepFrozen = (source = createMockObject()) => {
+  return {
+    source,
+    frozen: deepFreeze(source)
+  }
+}
 
 const expectToBeImmutable = (target) => {
   const firstKey = Object.keys(target)[0]
@@ -117,15 +123,13 @@ describe('freezeObject', () => {
   })
   describe('.setIn', () => {
     it('returns a frozen object with the deep value updated', () => {
-      const input = createMockObject()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const newValue = 'newValue'
       const target = frozen.setIn(['d', 'e'], newValue)
       expect(target.d.e).toBe(newValue)
     })
     it('returns a frozen object for each level where a value has change', () => {
-      const input = createMockObject()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const newValue = 'newValue'
       const target = frozen.setIn(['d', 'e'], newValue)
       expect(target).toNotBe(frozen)
@@ -135,15 +139,13 @@ describe('freezeObject', () => {
   })
   describe('.updateIn', () => {
     it('passes the object to update as an argument for the passed callback', () => {
-      const input = createMockObject()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const updater = createSpy()
       frozen.updateIn(['d'], updater)
       expect(updater).toHaveBeenCalledWith(frozen.d)
     })
     it('updates the object with the value provided by the callback', () => {
-      const input = createMockObject()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const newValue = {foo: 'newValue'}
       const updater = () => newValue
       const target = frozen.updateIn(['d'], updater)
