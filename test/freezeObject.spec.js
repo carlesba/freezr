@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import expect, {createSpy} from 'expect'
 import freezeObject from '../src/freezeObject'
 import deepFreeze from '../src/deepFreeze'
@@ -147,6 +148,12 @@ describe('freezeObject', () => {
       const updater = () => newValue
       const target = frozen.updateIn(['d'], updater)
       expect(target.d).toBe(newValue)
+    })
+  })
+  describe('.toJS', () => {
+    it('returns mutable source object', () => {
+      const {source, frozen} = buildMockFrozen()
+      expect(frozen.toJS()).toBe(source)
     })
   })
 })

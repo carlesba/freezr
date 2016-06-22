@@ -99,6 +99,9 @@ const FrozenArray = Object.assign([], {
     target.splice.apply(target, arguments)
     return freezeArray(target)
   },
+  toJS () {
+    return this.__source__
+  },
   isImmutable: true
 })
 

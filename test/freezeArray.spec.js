@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 import expect, {createSpy} from 'expect'
 import freezeArray from '../src/freezeArray'
 import deepFreeze from '../src/deepFreeze'
@@ -389,6 +390,12 @@ describe('freezeArray', () => {
       const addedElement2 = Symbol(2)
       const target = frozen.splice(1, 0, addedElement1, addedElement2)
       expectToBeImmutable(target)
+    })
+  })
+  describe('.toJS', () => {
+    it('returns mutable source object', () => {
+      const {source, frozen} = buildMockFrozen()
+      expect(frozen.toJS()).toBe(source)
     })
   })
 })

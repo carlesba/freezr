@@ -46,6 +46,9 @@ const FrozenObject = {
       return this
     }
   },
+  toJS () {
+    return this.__source__
+  },
   isImmutable: true
 }
 
