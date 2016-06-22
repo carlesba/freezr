@@ -349,6 +349,20 @@ describe('freezeArray', () => {
         frozen.setIn([0, 'a'], 3)
       }).toThrow(/invalid KeyPath/)
     })
+    it('creates a frozenArray node when the keyPath points to a non exisiting one and its a number', () => {
+      const input = freezeArray([1])
+      const target = input.setIn([1, 0], 2)
+      expect(target[1].isImmutable).toBe(true)
+      expect(Array.isArray(target[1])).toBe(true)
+      expect(target[1][0]).toBe(2)
+    })
+    it('creates a frozenObject node when the keyPath points to a non exisiting one and its not a number', () => {
+      const input = freezeArray([1])
+      const target = input.setIn([1, 'b'], 2)
+      expect(target[1].isImmutable).toBe(true)
+      expect(Array.isArray(target[1])).toBe(false)
+      expect(target[1].b).toBe(2)
+    })
   })
   describe('.updateIn', () => {
     it('passes the object to update as an argument for the passed callback', () => {

@@ -143,6 +143,12 @@ describe('freezeObject', () => {
         frozen.setIn(['a', 'b'], 2)
       }).toThrow()
     })
+    it('creates a frozen node when the keyPath points to a non exisiting one', () => {
+      const input = freezeObject({a: 1})
+      const target = input.setIn(['b', 'c'], 2)
+      expect(target.b.isImmutable).toBe(true)
+      expect(target.b.c).toBe(2)
+    })
   })
   describe('.updateIn', () => {
     it('passes the object to update as an argument for the passed callback', () => {

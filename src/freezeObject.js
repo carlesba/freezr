@@ -23,13 +23,16 @@ const FrozenObject = {
   setIn (keyPath, value) {
     const nextKey = keyPath[0]
     const nextValue = this[nextKey]
-    if (keyPath.length > 1 && !nextValue.isImmutable) {
+    if (keyPath.length > 1 && nextValue !== undefined && !nextValue.isImmutable) {
       throw new Error('invalid KeyPath: .%s is not a frozen node', nextKey)
     }
     if (keyPath.length > 1) {
+      const setValue = nextValue === undefined
+        ? freezeObject({})
+        : nextValue
       return this.set(
         nextKey,
-        nextValue.setIn(keyPath.slice(1), value)
+        setValue.setIn(keyPath.slice(1), value)
       )
     } else if (keyPath.length === 1) {
       return this.set(nextKey, value)

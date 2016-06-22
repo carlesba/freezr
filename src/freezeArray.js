@@ -1,3 +1,4 @@
+import freezeObject from './freezeObject'
 const FrozenArray = Object.assign([], {
   concat (arr) {
     const output = this.__source__.concat(arr)
@@ -71,13 +72,16 @@ const FrozenArray = Object.assign([], {
   setIn (keyPath, value) {
     const nextIndex = keyPath[0]
     const nextValue = this[nextIndex]
-    if (keyPath.length > 1 && !nextValue.isImmutable) {
+    if (keyPath.length > 1 && nextValue !== undefined && !nextValue.isImmutable) {
       throw new Error('invalid KeyPath: .%s is not a frozen node', nextIndex)
     }
     if (keyPath.length > 1) {
+      const setValue = nextValue === undefined
+        ? typeof keyPath[1] === 'number' ? freezeArray([]) : freezeObject({})
+        : nextValue
       return this.set(
         nextIndex,
-        nextValue.setIn(keyPath.slice(1), value)
+        setValue.setIn(keyPath.slice(1), value)
       )
     } else if (keyPath.length === 1) {
       return this.set(nextIndex, value)
