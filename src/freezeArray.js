@@ -70,10 +70,14 @@ const FrozenArray = Object.assign([], {
   },
   setIn (keyPath, value) {
     const nextIndex = keyPath[0]
+    const nextValue = this[nextIndex]
+    if (keyPath.length > 1 && !nextValue.isImmutable) {
+      throw new Error('invalid KeyPath: .%s is not a frozen node', nextIndex)
+    }
     if (keyPath.length > 1) {
       return this.set(
         nextIndex,
-        this[nextIndex].setIn(keyPath.slice(1), value)
+        nextValue.setIn(keyPath.slice(1), value)
       )
     } else if (keyPath.length === 1) {
       return this.set(nextIndex, value)
@@ -83,10 +87,14 @@ const FrozenArray = Object.assign([], {
   },
   updateIn (keyPath, updater) {
     const nextIndex = keyPath[0]
+    const nextValue = this[nextIndex]
+    if (keyPath.length > 1 && !nextValue.isImmutable) {
+      throw new Error('invalid KeyPath: .%s is not a frozen node', nextIndex)
+    }
     if (keyPath.length > 1) {
       return this.set(
         nextIndex,
-        this[nextIndex].updateIn(keyPath.slice(1), updater)
+        nextValue.updateIn(keyPath.slice(1), updater)
       )
     } else if (keyPath.length === 1) {
       return this.update(nextIndex, updater)

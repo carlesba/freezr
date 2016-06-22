@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 import expect, {createSpy} from 'expect'
 import freezeObject from '../src/freezeObject'
+import freeze from '../src/freeze'
 import deepFreeze from '../src/deepFreeze'
 
 const createMockObject = () => {
@@ -136,6 +137,12 @@ describe('freezeObject', () => {
       expect(target.d).toNotBe(frozen.d)
       expect(target.d.e).toNotBe(frozen.d.e)
     })
+    it('throws an Error when keyPath points to an non-frozen object', () => {
+      const {frozen} = buildMockFrozen()
+      expect(() => {
+        frozen.setIn(['a', 'b'], 2)
+      }).toThrow()
+    })
   })
   describe('.updateIn', () => {
     it('passes the object to update as an argument for the passed callback', () => {
@@ -150,6 +157,12 @@ describe('freezeObject', () => {
       const updater = () => newValue
       const target = frozen.updateIn(['d'], updater)
       expect(target.d).toBe(newValue)
+    })
+    it('throws an Error when keyPath points to an non-frozen object', () => {
+      const frozen = freeze({a: {b: {c: 2}}})
+      expect(() => {
+        frozen.updateIn(['a', 'b', 'c'], (c) => 3)
+      }).toThrow(/invalid KeyPath/)
     })
   })
   describe('.toJS', () => {

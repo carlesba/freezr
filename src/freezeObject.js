@@ -22,10 +22,14 @@ const FrozenObject = {
   },
   setIn (keyPath, value) {
     const nextKey = keyPath[0]
+    const nextValue = this[nextKey]
+    if (keyPath.length > 1 && !nextValue.isImmutable) {
+      throw new Error('invalid KeyPath: .%s is not a frozen node', nextKey)
+    }
     if (keyPath.length > 1) {
       return this.set(
         nextKey,
-        this[nextKey].setIn(keyPath.slice(1), value)
+        nextValue.setIn(keyPath.slice(1), value)
       )
     } else if (keyPath.length === 1) {
       return this.set(nextKey, value)
@@ -35,13 +39,17 @@ const FrozenObject = {
   },
   updateIn (keyPath, updater) {
     const nextKey = keyPath[0]
+    const nextValue = this[nextKey]
+    if (keyPath.length > 1 && !nextValue.isImmutable) {
+      throw new Error('invalid KeyPath: .%s is not a frozen node', nextKey)
+    }
     if (keyPath.length > 1) {
       return this.set(
         nextKey,
-        this[nextKey].updateIn(keyPath.slice(1), updater)
+        nextValue.updateIn(keyPath.slice(1), updater)
       )
     } else if (keyPath.length === 1) {
-      return this.set(nextKey, updater(this[nextKey]))
+      return this.set(nextKey, updater(nextValue))
     } else {
       return this
     }

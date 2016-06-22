@@ -343,6 +343,12 @@ describe('freezeArray', () => {
       expect(target[4]).toNotBe(frozen[4])
       expect(target[4]['a']).toNotBe(frozen[4]['a'])
     })
+    it('throws an Error when keyPath points to an non-frozen object', () => {
+      const frozen = freezeArray([{a: 1}])
+      expect(() => {
+        frozen.setIn([0, 'a'], 3)
+      }).toThrow(/invalid KeyPath/)
+    })
   })
   describe('.updateIn', () => {
     it('passes the object to update as an argument for the passed callback', () => {
@@ -357,6 +363,12 @@ describe('freezeArray', () => {
       const updater = () => newValue
       const target = frozen.updateIn([4, 'a'], updater)
       expect(target[4]['a']).toBe(newValue)
+    })
+    it('throws an Error when keyPath points to an non-frozen object', () => {
+      const frozen = freezeArray([{a: 1}])
+      expect(() => {
+        frozen.updateIn([0, 'a'], (a) => 3)
+      }).toThrow(/invalid KeyPath/)
     })
   })
   describe('.splice', () => {
