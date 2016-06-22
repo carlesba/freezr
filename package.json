@@ -14,7 +14,7 @@
   "scripts": {
     "test": "npm run linter; npm run testing; npm run clean",
     "testing": "mocha --compilers js:babel-register --recursive",
-    "dev:watch": "mocha --compilers js:babel-register --recursive -w",
+    "dev:watch": "mocha --compilers js:babel-register --recursive -w -R min",
     "dev:reporter": "mocha --compilers js:babel-register --recursive -w --reporter mocha-osx-reporter",
     "start": "npm run dev:watch",
     "clean": "rm -rf lib",
