@@ -20,7 +20,12 @@ const buildMockFrozen = (source = createMockArray()) => {
     frozen: freezeArray(source)
   }
 }
-
+const buildMockDeepFrozen = (source = createMockArray()) => {
+  return {
+    source,
+    frozen: deepFreeze(source)
+  }
+}
 const expectToBeImmutable = (target) => {
   const firstValue = target[0]
   expect(() => {
@@ -326,15 +331,13 @@ describe('freezeArray', () => {
   })
   describe('.setIn', () => {
     it('returns a new FrozenArray with the deep value updated', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const newValue = 'newValue'
       const target = frozen.setIn([4, 'a', 0], newValue)
       expect(target[4]['a'][0]).toBe(newValue)
     })
     it('returns a new FrozenArray for each level where a value has change', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const newValue = 'newValue'
       const target = frozen.setIn([4, 'a', 0], newValue)
       expect(target[4]).toNotBe(frozen[4])
@@ -343,15 +346,13 @@ describe('freezeArray', () => {
   })
   describe('.updateIn', () => {
     it('passes the object to update as an argument for the passed callback', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const updater = createSpy()
       frozen.updateIn([4, 'a'], updater)
       expect(updater).toHaveBeenCalledWith(frozen[4]['a'])
     })
     it('updates the object with the value provided by the callback', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const newValue = 'newValue'
       const updater = () => newValue
       const target = frozen.updateIn([4, 'a'], updater)
@@ -360,8 +361,7 @@ describe('freezeArray', () => {
   })
   describe('.splice', () => {
     it('removes elements pointed at second argument from first argument', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const initialIndex = 1
       const elementsToRemove = 2
       const target = frozen.splice(initialIndex, elementsToRemove)
@@ -371,8 +371,7 @@ describe('freezeArray', () => {
       expect(target[2]).toBe(frozen[4])
     })
     it('adds elements at desired index', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const addedElement1 = Symbol(1)
       const addedElement2 = Symbol(2)
       const target = frozen.splice(1, 0, addedElement1, addedElement2)
@@ -384,8 +383,7 @@ describe('freezeArray', () => {
       expect(target[4]).toBe(frozen[2])
     })
     it('returns an immutable array', () => {
-      const input = createMockArray()
-      const frozen = deepFreeze(input)
+      const {frozen} = buildMockDeepFrozen()
       const addedElement1 = Symbol(1)
       const addedElement2 = Symbol(2)
       const target = frozen.splice(1, 0, addedElement1, addedElement2)
