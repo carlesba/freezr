@@ -10,8 +10,8 @@ There are lots of libraries to build immutable data but most of them avoid the n
 
 - **Loose new language features**. Like *[destructuring](https://babeljs.io/docs/learn-es2015/#destructuring)*.
 - **Worring about arguments interface**. Your application cannot deal 100% with *[put_your_immutable_library]*'s data structure so when that function gets two objects you can't be sure how to read its data.
-- **Problems when using other libraries**. You'd like to use that lodas method or this redux's middleare but you have to transform your immutable-data to plain objects to do it.
-- Because** *Object.freeze* it's not enough**. Although we *freeze* all our data we need to do it every time we want to update an object.
+- **Problems when using other libraries**. You'd like to use that lodash method or this redux's middleare but you have to transform your immutable-data to plain objects to do it.
+- Because ***Object.freeze*** **it's not enough**. Although we freeze all our data we need to do it every time we want to update an object.
 
 Take a look to the [Docs](./docs/index.md)
 
