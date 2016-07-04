@@ -56,6 +56,11 @@ describe('freezeObject', () => {
       const frozenKeys = Object.keys(frozen)
       expect(frozenKeys).toEqual(sourceKeys)
     })
+    it('doesn\'t parse an object when it\'s already a FrozenObject', () => {
+      const source = freezeObject([1, 2])
+      const output = freezeObject(source)
+      expect(output).toBe(source)
+    })
   })
 
   describe('.merge', () => {

@@ -70,6 +70,7 @@ const FrozenObject = {
 }
 
 export default function freezeObject (source) {
+  if (FrozenObject.isPrototypeOf(source)) return source
   const target = Object.create(FrozenObject)
   Object.defineProperty(target, '__source__', {
     value: source

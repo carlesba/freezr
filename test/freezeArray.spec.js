@@ -69,6 +69,11 @@ describe('freezeArray', () => {
       const target = freezeArray(source)
       expect(target.isImmutable).toBe(true)
     })
+    it('doesn\'t parse an array when it\'s already a frozenArray', () => {
+      const source = freezeArray([1, 2])
+      const output = freezeArray(source)
+      expect(output).toBe(source)
+    })
   })
 
   describe('.length', () => {

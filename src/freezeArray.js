@@ -127,6 +127,7 @@ const FrozenArray = Object.assign([], {
 })
 
 export default function freezeArray (source) {
+  if (FrozenArray.isPrototypeOf(source)) return source
   let target = source.concat([])
   Object.setPrototypeOf(target, FrozenArray)
   Object.defineProperty(target, '__source__', {
