@@ -76,5 +76,7 @@ export default function freezeObject (source) {
     value: source
   })
   Object.assign(target, source)
-  return Object.freeze(target)
+  return process.env.NODE_ENV !== 'production'
+    ? Object.freeze(target)
+    : target
 }

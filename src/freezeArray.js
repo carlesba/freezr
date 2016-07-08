@@ -133,5 +133,7 @@ export default function freezeArray (source) {
   Object.defineProperty(target, '__source__', {
     value: source
   })
-  return Object.freeze(target)
+  return process.env.NODE_ENV !== 'production'
+    ? Object.freeze(target)
+    : target
 }
