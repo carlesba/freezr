@@ -11,7 +11,9 @@ const createMockArray = () => {
     Symbol(2),
     () => 3,
     true,
-    {a: [1, 2]}
+    {a: [1, 2]},
+    null,
+    undefined
   ]
 }
 const buildMockFrozen = (source = createMockArray()) => {

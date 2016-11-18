@@ -118,7 +118,7 @@ const FrozenArray = Object.assign([], {
   },
   toJS () {
     return this.__source__.map((val, index) => {
-      return val.isImmutable
+      return val !== null && val !== undefined && val.isImmutable
         ? val.toJS()
         : val
     })

@@ -12,7 +12,9 @@ const createMockObject = () => {
     d: {
       e: 5,
       f: 'foo'
-    }
+    },
+    g: null,
+    h: undefined
   }
 }
 

@@ -60,7 +60,10 @@ const FrozenObject = {
   toJS () {
     return Object.keys(this.__source__).reduce(
       (acc, key) => {
-        if (acc[key].isImmutable) acc[key] = acc[key].toJS()
+        const val = acc[key]
+        if (val !== null && val !== undefined && val.isImmutable) {
+          acc[key] = acc[key].toJS()
+        }
         return acc
       },
       this.__source__
