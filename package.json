@@ -21,7 +21,8 @@
     "linter": "snazzy src",
     "build": "./node_modules/.bin/babel src --out-dir lib",
     "prepublish": "npm run test && npm run clean && npm run build",
-    "postpublish": "npm run clean"
+    "postpublish": "npm run clean",
+    "try": "webpack-dev-server --config ./try/webpack.config.js"
   },
   "keywords": [
     "immutable",
@@ -39,7 +40,9 @@
     "mocha": "^3.2.0",
     "mocha-osx-reporter": "^0.1.2",
     "snazzy": "^6.0.0",
-    "standard": "^8.6.0"
+    "standard": "^8.6.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   },
   "standard": {
     "globals": [
