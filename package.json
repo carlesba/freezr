@@ -13,12 +13,11 @@
   },
   "scripts": {
     "test": "npm run linter; npm run testing; npm run clean",
-    "testing": "mocha --compilers js:babel-register --recursive",
-    "dev:watch": "mocha --compilers js:babel-register --recursive -w -R min",
-    "dev:reporter": "mocha --compilers js:babel-register --recursive -w --reporter mocha-osx-reporter",
-    "start": "npm run dev:watch",
+    "testing": "tape -r babel-register src/**/*.spec.js -o | faucet",
+    "dev": "tape-watch -r babel-register src/**/*.spec.js -o | faucet",
+    "dev:raw": "tape-watch -r babel-register src/**/*.spec.js",
     "clean": "rm -rf lib",
-    "linter": "snazzy src",
+    "linter": "standard src | snazzy",
     "build": "./node_modules/.bin/babel src --out-dir lib",
     "prepublish": "npm run test && npm run clean && npm run build",
     "postpublish": "npm run clean",
@@ -34,15 +33,17 @@
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
-    "babel-preset-es2015": "^6.22.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.5.2",
     "babel-register": "^6.23.0",
     "expect": "^1.20.1",
-    "mocha": "^3.2.0",
-    "mocha-osx-reporter": "^0.1.2",
-    "snazzy": "^6.0.0",
-    "standard": "^8.6.0",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0"
+    "faucet": "^0.0.1",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.2",
+    "tape": "^4.7.0",
+    "tape-watch": "^2.3.0",
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.0"
   },
   "standard": {
     "globals": [
@@ -50,5 +51,6 @@
       "it",
       "xit"
     ]
-  }
+  },
+  "dependencies": {}
 }
