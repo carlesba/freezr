@@ -1,6 +1,8 @@
 import * as freezeProto from './methods'
 import * as arrayMethods from './array-methods'
 
+freezeProto.delete = freezeProto.remove
+
 /*
   Creation Utils
  */

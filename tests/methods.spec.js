@@ -173,6 +173,22 @@ test('merge', (t) => {
   t.equal(targetArray[3], fsourceArray[3])
   t.end()
 })
+
+test('delete', (t) => {
+  t.comment('::object')
+  const sourceO = df({a: 1, b: 2, c: 3})
+  const targetO = sourceO.delete('a')
+  t.notOk(targetO.a)
+  t.equal(sourceO.b, targetO.b)
+  t.equal(sourceO.c, targetO.c)
+
+  t.comment('::array')
+  const sourceA = df([0, 1, 2, 3])
+  const targetA = sourceA.delete(3)
+  targetA.forEach((value, index) => t.equal(sourceA[index], value))
+  t.equal(targetA.length, sourceA.length - 1)
+  t.end()
+})
 // const assertUpdateInDeepSet = (t) => {
 //   t.comment('::deep set object')
 //   const source = { a: { b: { c: 1 }, bb: 2, bbb: 3 } }

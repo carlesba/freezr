@@ -1,12 +1,10 @@
 import {
-  removeFirst,
   removeLast,
-  getLast,
-  printObject,
   checkFrozen
 } from './methods-utils'
 import {freeze as f} from './creation'
 import {doNew} from './creation-utils'
+import {printObject} from './test-utils'
 
 /*
   methods
@@ -69,6 +67,13 @@ export function merge () {
   const args = Object.assign.apply(ref, arguments)
   const o = doNew(this)
   const oo = Object.assign({}, o, args)
+  return f(oo)
+}
+
+export function remove (key, o) {
+  const oo = doNew(o || this)
+  if (Array.isArray(oo)) return f(oo).deleteAt(key)
+  delete oo[key]
   return f(oo)
 }
 
