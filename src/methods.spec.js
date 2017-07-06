@@ -1,6 +1,5 @@
 import test from 'tape'
 import {
-  freeze as f,
   deepFreeze as df
 } from './creation'
 import {
@@ -8,7 +7,6 @@ import {
   getIn,
   set,
   update,
-  updateIn,
   setIn
 } from './methods'
 // import {printObject} from './methods-utils'
