@@ -1,4 +1,5 @@
 import freeze from './freeze'
 import deepFreeze from './deepFreeze'
-
-export { freeze, deepFreeze }
+const f = freeze
+const df = deepFreeze
+export { freeze, deepFreeze, f, df }
