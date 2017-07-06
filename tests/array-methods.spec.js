@@ -1,9 +1,9 @@
 import test from 'tape'
 import {
   push
-} from './array-methods'
+} from '../src/array-methods'
 import {assertIsFrozen} from './creation.spec'
-import {freeze as f, deepFreeze as df} from './creation'
+import {freeze as f, deepFreeze as df} from '../src/creation'
 
 const assertEachItem = (t, source, target) =>
   source.forEach((item, index) => t.equal(target[index], item))

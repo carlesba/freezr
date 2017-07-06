@@ -1,11 +1,11 @@
 import test from 'tape'
-import {freeze as f} from './creation'
+import {freeze as f} from '../src/creation'
 import {
   removeLast,
   removeFirst,
   getLast,
   checkFrozen
-} from './methods-utils'
+} from '../src/methods-utils'
 
 test('removeLast', (t) => {
   t.same(

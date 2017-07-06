@@ -1,6 +1,6 @@
 import test from 'tape'
-import {isFreezable, doNew} from './creation-utils'
-import {freeze as f} from './creation'
+import {isFreezable, doNew} from '../src/creation-utils'
+import {freeze as f} from '../src/creation'
 
 test('isFreezable', (t) => {
   t.equal(isFreezable(null), false)

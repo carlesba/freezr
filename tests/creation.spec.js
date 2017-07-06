@@ -1,6 +1,6 @@
 import test from 'tape'
-import {freeze as f, deepFreeze as df} from './creation'
-import {isFreezable} from './creation-utils'
+import {freeze as f, deepFreeze as df} from '../src/creation'
+import {isFreezable} from '../src/creation-utils'
 
 const assertNotFreeze = (t, o, deep) =>
   t.equal(deep ? df(o) : f(o), o, 'should not freeze')
