@@ -12,8 +12,8 @@
     "url": "https://github.com/carlesba/freezr"
   },
   "scripts": {
-    "test": "npm run linter; npm run testing; npm run clean",
-    "testing": "tape -r babel-register src/**/*.spec.js -o | faucet",
+    "test": "npm run linter && npm run testing && npm run clean",
+    "testing": "tape 'src/*.spec.js' -o -r babel-register | faucet",
     "dev": "tape-watch -r babel-register src/**/*.spec.js -o | faucet",
     "dev:raw": "tape-watch -r babel-register src/**/*.spec.js",
     "clean": "rm -rf lib",
