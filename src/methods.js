@@ -64,6 +64,14 @@ export function updateIn (keyPath, callback, o) {
   )
 }
 
+export function merge () {
+  const ref = Array.isArray(this) ? [] : {}
+  const args = Object.assign.apply(ref, arguments)
+  const o = doNew(this)
+  const oo = Object.assign({}, o, args)
+  return f(oo)
+}
+
 // export function createIn (keyPath, value, o) {
 //   const oo = doNew(keyPath)
 //     .reduce((acc, key, index) => {
