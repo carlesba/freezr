@@ -78,3 +78,11 @@ export function slice (begin, end, a) {
   const rawArray = doNew(a || this)
   return f(rawArray.slice(begin, end))
 }
+export function indexOf (value, a) {
+  const aa = doNew(a || this)
+  return aa.indexOf(value)
+}
+export function findIndex (callback, a) {
+  const aa = doNew(a || this)
+  return aa.findIndex(callback)
+}

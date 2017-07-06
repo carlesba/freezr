@@ -13,6 +13,7 @@ export function freeze (o, oo) {
   const origin = oo || o
   const proto = Object.assign(getFreezeProto(o), {
     toJSON () { return origin },
+    toJS () { return origin },
     __isFreezr__: true
   })
   const ooo = doNew(o)
