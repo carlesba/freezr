@@ -2,7 +2,7 @@
   "name": "freezr",
   "version": "0.0.13",
   "description": "Immutable data with native interface (and some sugar)",
-  "main": "lib/index.js",
+  "main": "lib/src/index.js",
   "jsnext:main": "src/index.js",
   "bugs": {
     "url": "https://github.com/carlesba/freezr/issues"
@@ -12,13 +12,16 @@
     "url": "https://github.com/carlesba/freezr"
   },
   "scripts": {
-    "test": "npm run linter && npm run testing && npm run clean",
-    "testing": "tape -r babel-register tests/*",
+    "test": "npm run linter && npm run test && npm run clean",
     "dev": "tape-watch -r babel-register src/**/*.spec.js -o | faucet",
     "dev:raw": "tape-watch -r babel-register src/**/*.spec.js",
     "clean": "rm -rf lib",
     "linter": "standard src | snazzy",
-    "build": "./node_modules/.bin/babel src --out-dir lib",
+    "test": "npm run build && npm run test:build",
+    "build": "npm run build:src && npm run build:tests",
+    "build:src": "./node_modules/.bin/babel src --out-dir lib/src",
+    "build:tests": "./node_modules/.bin/babel tests --out-dir lib/tests",
+    "test:build": "tape lib/tests/* | faucet",
     "prepublish": "npm run test && npm run clean && npm run build",
     "postpublish": "npm run clean",
     "try": "webpack-dev-server --config ./try/webpack.config.js"
