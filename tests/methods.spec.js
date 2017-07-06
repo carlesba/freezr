@@ -154,6 +154,25 @@ test('update', (t) => {
   t.end()
 })
 
+test('merge', (t) => {
+  t.comment('::merge object')
+  const fsource = df({a: 1, b: 1, c: 1, d: [1, 2, 3]})
+  const target = fsource.merge({a: 2, b: 2}, {b: 3, c: 3})
+  assertIsFrozen(target)
+  t.equal(target.a, 2)
+  t.equal(target.b, 3)
+  t.equal(target.c, 3)
+  t.equal(target.d, fsource.d)
+  t.comment('::merge array')
+  const fsourceArray = df([0, 1, 2, {a: 1}])
+  const targetArray = fsourceArray.merge([1])
+  assertIsFrozen(targetArray)
+  t.equal(targetArray[0], 1)
+  t.equal(targetArray[1], fsourceArray[1])
+  t.equal(targetArray[2], fsourceArray[2])
+  t.equal(targetArray[3], fsourceArray[3])
+  t.end()
+})
 // const assertUpdateInDeepSet = (t) => {
 //   t.comment('::deep set object')
 //   const source = { a: { b: { c: 1 }, bb: 2, bbb: 3 } }

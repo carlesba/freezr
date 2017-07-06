@@ -13,8 +13,8 @@
   },
   "scripts": {
     "test": "npm run linter && npm run test:lib",
-    "dev": "tape-watch -r babel-register src/**/*.spec.js -o | faucet",
-    "dev:raw": "tape-watch -r babel-register src/**/*.spec.js",
+    "dev": "tape-watch -r babel-register tests/* -o | faucet",
+    "dev:raw": "tape-watch -r babel-register tests/*",
     "clean": "rm -rf lib",
     "linter": "standard src | snazzy",
     "test:lib": "npm run build && npm run test:build",
