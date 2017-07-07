@@ -42,6 +42,7 @@ test('freeze', (t) => {
 
   assertIsFrozen(t, f({a: 1, b: '2', c: '3'}))
   assertIsFrozen(t, f([1, 2, 'foo', () => {}]))
+
   t.end()
 })
 
@@ -55,6 +56,12 @@ test('deepFreeze', (t) => {
   assertIsFrozen(t, df([1, 2, 'foo', () => {}]))
 
   assertDeepFrozen(t)
+
+  t.comment('::toJS')
+  const source = { a: 1, b: { c: { d: 3 } } }
+  const fsource = df(source)
+  t.equal(fsource.toJS(), source)
+  t.equal(fsource.toJSON(), source)
 
   t.end()
 })
