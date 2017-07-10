@@ -1,6 +1,6 @@
 {
   "name": "freezr",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Immutable data with native interface (and some sugar)",
   "main": "lib/src/index.js",
   "jsnext:main": "src/index.js",
