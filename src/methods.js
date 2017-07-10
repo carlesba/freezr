@@ -4,7 +4,6 @@ import {
 } from './methods-utils'
 import {freeze as f} from './creation'
 import {doNew} from './creation-utils'
-import {printObject} from './test-utils'
 
 /*
   methods
@@ -24,7 +23,7 @@ export function getIn (path, o, onlyFrozen) {
 export const checkPath = (keyPath, method, o) => {
   const oo = o || this
   if (getIn(keyPath, oo, true) === undefined) {
-    const errorMsg = `Invalid keyPath ${keyPath}, ${method}, ${printObject(oo)}`
+    const errorMsg = `Invalid keyPath ${keyPath}, ${method}`
     throw new Error(errorMsg)
   }
   return true
