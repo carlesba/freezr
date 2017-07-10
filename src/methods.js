@@ -33,7 +33,8 @@ export const checkPath = (keyPath, method, o) => {
 export function set (key, value, o) {
   const oo = o || this
   if (key === undefined || key === null) return oo
-  return f(Object.assign({}, oo, {[key]: value}))
+  const origin = Array.isArray(oo) ? [] : {}
+  return f(Object.assign(origin, oo, {[key]: value}))
 }
 
 export function setIn (keyPath, value, o) {

@@ -98,6 +98,7 @@ test('set', (t) => {
   t.equal(result3[0], 1, 'should set value')
   t.equal(result3[1], 1, 'should keep other vaules')
   t.equal(result3[2], 2, 'should keep other vaules')
+  t.equal(Array.isArray(result3), true, 'should be kept as array')
 
   t.end()
 })
