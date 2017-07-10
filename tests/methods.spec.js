@@ -244,3 +244,17 @@ test('updateIn', (t) => {
   assertUpdateInArray(t)
   t.end()
 })
+
+test('toJS', (t) => {
+  const source = { a: { b: [ { c: 2, d: 3 } ] } }
+  const fsource = df(source)
+  t.same(
+    fsource.toJS(),
+    source
+  )
+  t.same(
+    fsource.toJSON(),
+    source
+  )
+  t.end()
+})

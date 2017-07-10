@@ -57,11 +57,5 @@ test('deepFreeze', (t) => {
 
   assertDeepFrozen(t)
 
-  t.comment('::toJS')
-  const source = { a: 1, b: { c: { d: 3 } } }
-  const fsource = df(source)
-  t.equal(fsource.toJS(), source)
-  t.equal(fsource.toJSON(), source)
-
   t.end()
 })

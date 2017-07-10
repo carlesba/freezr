@@ -78,6 +78,35 @@ export function remove (key, o) {
   return f(oo)
 }
 
+function isFreezr (o) {
+  return o && o.__isFreezr__
+}
+
+function toJSArray (a) {
+  const aa = []
+  for (let i = 0; i < a.length; i++) {
+    aa.push(toJS(a[i]))
+  }
+  return aa
+}
+function toJSObject (o) {
+  return Object.keys(o).reduce(
+    (acc, key) => {
+      acc[key] = toJS(o[key])
+      return acc
+    },
+    {}
+  )
+}
+
+export function toJS (o) {
+  const oo = o || this
+  if (!isFreezr(oo)) return oo
+  return Array.isArray(oo)
+    ? toJSArray(oo)
+    : toJSObject(oo)
+}
+
 // export function createIn (keyPath, value, o) {
 //   const oo = doNew(keyPath)
 //     .reduce((acc, key, index) => {
