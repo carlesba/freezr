@@ -16,14 +16,32 @@ import {
 test('checkPath', (t) => {
   const source = { a: { b: { c: [ 0, 1, 2 ] } } }
   const fsource = df(source)
+
+  t.comment('::happy path')
   t.equal(
-    checkPath(['a', 'b', 'c', 0], 'checkPath', fsource),
+    checkPath(['a', 'b', 'c', 0], 'test', fsource),
     true,
     'should return true when path is fully frozen'
   )
+
+  t.comment('::non frozen object')
   t.throws(function () {
-    checkPath(['a'], 'checkPath', source)
-  })
+    checkPath(['a'], 'test', source)
+  }, 'should throw error when checkPath on a non freezr object')
+
+  t.comment('::last key does not exist yet')
+  t.equal(
+    checkPath(['a', 'b', 'd'], 'test', fsource),
+    true,
+    'should return true even when last key do not exist but previous does'
+  )
+
+  t.comment('::single key that does not exist')
+  t.equal(
+    checkPath(['b'], 'test', fsource),
+    true,
+    'should return true even when last key do not exist but previous does'
+  )
 
   t.end()
 })
@@ -120,10 +138,20 @@ const assertSetInArray = (t) => {
   t.same(result[1], source[1], 'should keep other values')
 }
 
+const assertCreatingPropInObject = (t) => {
+  t.comment('::create property')
+  const source = { a: { b: 2 } }
+  const fsource = df(source)
+  const target = fsource.setIn(['a', 'c'], 3)
+  assertIsFrozen(target)
+  t.equal(target.a.c, 3)
+}
+
 test('setIn', (t) => {
   assertSetInWithMinimumPaths(t)
   assertSetInDeepSet(t)
   assertSetInArray(t)
+  assertCreatingPropInObject(t)
   t.end()
 })
 
@@ -189,30 +217,29 @@ test('delete', (t) => {
   t.equal(targetA.length, sourceA.length - 1)
   t.end()
 })
-// const assertUpdateInDeepSet = (t) => {
-//   t.comment('::deep set object')
-//   const source = { a: { b: { c: 1 }, bb: 2, bbb: 3 } }
-//   const fo = df(source)
-//   const result = fo.updateIn(['a', 'b'], (b) => 2)
-//   assertIsFrozen(t, result)
-//   t.equal(result.a.b, 2)
-//   t.equal(result.a.bb, 2)
-//   t.equal(result.a.bbb, 3)
-// }
-// const assertUpdateInArray = (t) => {
-//   t.comment('::deep set array')
-//   const source = [ {a: 1}, {a: 2}, {b: 3} ]
-//   const fsource = df(source)
-//   fsource.slice(1)
-//   // const result = fsource.updateIn([0, 'a'], (a) => a + 1)
-//   // assertIsFrozen(t, result)
-//   // console.log('::::', result)
-//   // t.equal(result[0].a, 2, 'should set value')
-//   // t.same(result[1], source[1], 'should keep other values')
-// }
+const assertUpdateInDeepSet = (t) => {
+  t.comment('::deep set object')
+  const source = { a: { b: { c: 1 }, bb: 2, bbb: 3 } }
+  const fo = df(source)
+  const result = fo.updateIn(['a', 'b'], (b) => 2)
+  assertIsFrozen(t, result)
+  t.equal(result.a.b, 2)
+  t.equal(result.a.bb, 2)
+  t.equal(result.a.bbb, 3)
+}
+const assertUpdateInArray = (t) => {
+  t.comment('::deep set array')
+  const source = [ {a: 1}, {a: 2}, {b: 3} ]
+  const fsource = df(source)
+  fsource.slice(1)
+  const result = fsource.updateIn([0, 'a'], (a) => a + 1)
+  assertIsFrozen(t, result)
+  t.equal(result[0].a, 2, 'should set value')
+  t.same(result[1], source[1], 'should keep other values')
+}
 
-// test.only('updateIn', (t) => {
-//   // assertUpdateInDeepSet(t)
-//   assertUpdateInArray(t)
-//   t.end()
-// })
+test('updateIn', (t) => {
+  assertUpdateInDeepSet(t)
+  assertUpdateInArray(t)
+  t.end()
+})

@@ -22,7 +22,8 @@ export function getIn (path, o, onlyFrozen) {
 
 export const checkPath = (keyPath, method, o) => {
   const oo = o || this
-  if (getIn(keyPath, oo, true) === undefined) {
+  const path2check = removeLast(keyPath)
+  if (!oo.__isFreezr__ || getIn(path2check, oo, true) === undefined) {
     const errorMsg = `Invalid keyPath ${keyPath}, ${method}`
     throw new Error(errorMsg)
   }
