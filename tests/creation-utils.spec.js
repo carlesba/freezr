@@ -10,6 +10,7 @@ test('isFreezable', (t) => {
   t.equal(isFreezable(function () {}), false)
   t.equal(isFreezable({a: 1}), true)
   t.equal(isFreezable([1, 2]), true)
+  t.equal(isFreezable(new Date()), false)
   t.end()
 })
 

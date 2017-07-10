@@ -26,7 +26,8 @@ export const doNew = (o) => {
 
 export const isFreezable = (o) => (
   typeof o === 'object' &&
-  o !== null
+  o !== null &&
+  typeof o.getMonth !== 'function' // date objects
 )
 
 export const isPlainObj = (value) =>
