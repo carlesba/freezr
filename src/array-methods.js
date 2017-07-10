@@ -86,3 +86,9 @@ export function findIndex (callback, a) {
   const aa = doNew(a || this)
   return aa.findIndex(callback)
 }
+export function includes (callback, fromIndex, a) {
+  const aa = typeof fromIndex === 'number' ? a : fromIndex
+  const fromI = typeof fromIndex === 'number' && fromIndex
+  const aaa = doNew(aa || this)
+  return aaa.includes(callback, fromI)
+}

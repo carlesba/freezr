@@ -1,6 +1,7 @@
 import test from 'tape'
 import {
-  push
+  push,
+  includes
 } from '../src/array-methods'
 import {assertIsFrozen} from './creation.spec'
 import {freeze as f, deepFreeze as df} from '../src/creation'
@@ -200,5 +201,20 @@ test('slice', (t) => {
   assertIsFrozen(targetC)
   t.same(targetC, [2])
 
+  t.end()
+})
+test('includes', (t) => {
+  const origin = f([0, 1, 2])
+  t.equal(origin.includes(1), true)
+  t.equal(origin.includes(1, 2), false)
+  t.equal(origin.includes('a'), false)
+  t.equal(
+    includes('a', ['a', 'b']),
+    true
+  )
+  t.equal(
+    includes('a', 1, ['a', 'b']),
+    false
+  )
   t.end()
 })
