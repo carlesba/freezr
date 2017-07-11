@@ -31,7 +31,7 @@ export const checkFrozen = (o) => (
   !isFreezable(o) ||
   (
     typeof o === 'object' &&
-    typeof o.toJSON === 'function' &&
+    typeof o.toJS === 'function' &&
     typeof o.getIn === 'function'
   )
 )

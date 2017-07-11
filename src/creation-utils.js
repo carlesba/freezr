@@ -2,7 +2,6 @@ import * as freezeProto from './methods'
 import * as arrayMethods from './array-methods'
 
 freezeProto.delete = freezeProto.remove
-freezeProto.toJSON = freezeProto.toJS
 
 /*
   Creation Utils

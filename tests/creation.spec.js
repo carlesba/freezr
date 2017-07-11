@@ -15,7 +15,7 @@ const assertIsImmutable = (t, o) => {
 }
 
 const assertHasToJSON = (t, o) => isFreezable(o)
-  ? t.ok(o.toJSON, 'should have toJSON')
+  ? t.ok(o.toJS, 'should have toJSON')
   : null
 
 export const assertIsFrozen = (t, o) => {
