@@ -82,6 +82,10 @@ export function indexOf (value, a) {
   const aa = doNew(a || this)
   return aa.indexOf(value)
 }
+export function find (callback, a) {
+  const aa = doNew(a || this)
+  return aa.find(callback)
+}
 export function findIndex (callback, a) {
   const aa = doNew(a || this)
   return aa.findIndex(callback)
